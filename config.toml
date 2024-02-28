@@ -34,7 +34,9 @@ clean = "sbt clean"
 lang = "Scala"
 name = "IteratorNative"
 desc = "Basic iterator solution but native this time"
+
 path = "solutions/2023/Scala/iternative"
+
 build = "sbt package"
-exec = "if type 'scala3' &> /dev/null; then SCALA=scala3; else SCALA=scala; fi; $SCALA ./target/scala-3.3.1/iternative-out"
+exec = "if type 'scala3' &> /dev/null; then SCALA=scala3; else SCALA=scala; fi; $SCALA ./target/scala-3.3.1/iternative_native0.4_3-0.1.0-SNAPSHOT.jar"
 clean = "sbt clean"
