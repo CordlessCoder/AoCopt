@@ -240,6 +240,17 @@ fn main() -> eyre::Result<()> {
         );
     }
 
+    let (year, day) = (args.year, args.day);
+    if args.dry {
+        for (DeserFromStr(part), solutions) in to_run {
+            println!("Executing {year} day {day} part {part}");
+            for sol in solutions {
+                print_solution(&sol.name, &sol.language, sol.description.as_deref());
+            }
+        }
+        return Ok(());
+    }
+
     let mut input_provider = MultipleInputProvider::new();
     let filesystem_provider = FilesystemInputProvider::new(config.input_path.clone());
     input_provider.push(Box::new(filesystem_provider));
@@ -252,18 +263,10 @@ fn main() -> eyre::Result<()> {
         clean: args.clean,
         command_timeout: config.command_timeout,
     };
-    let (year, day) = (args.year, args.day);
     for (DeserFromStr(part), solutions) in to_run {
         println!("Executing {year} day {day} part {part}");
         for sol in solutions {
-            println!(
-                "{name}, {language}",
-                name = sol.name,
-                language = sol.language.magenta(),
-            );
-            if let Some(desc) = &sol.description {
-                println!("{desc}", desc = desc.blue())
-            }
+            print_solution(&sol.name, &sol.language, sol.description.as_deref());
             match run_solution(&mut state, year, day, sol) {
                 Ok((runtime, output)) => {
                     println!(
@@ -277,6 +280,16 @@ fn main() -> eyre::Result<()> {
         }
     }
     Ok(())
+}
+fn print_solution(name: &str, language: &str, description: Option<&str>) {
+    println!(
+        "{name}, {language}",
+        name = name,
+        language = language.magenta(),
+    );
+    if let Some(desc) = &description {
+        println!("{desc}", desc = desc.blue())
+    }
 }
 #[derive(Debug)]
 struct State {

@@ -34,6 +34,9 @@ pub struct Arguments {
     /// The config file to use
     #[arg(long, default_value = "config.toml")]
     pub config: PathBuf,
+    /// Print the solutions that would be ran, without actually running them
+    #[arg(long)]
+    pub dry: bool,
 }
 
 fn get_true() -> bool {
