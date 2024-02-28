@@ -4,6 +4,11 @@ Just a couple of people optimizing AoC problems a bit too far.
 
 # Usage
 
+## Compiling
+
+You'll need the Rust toolchain. Install one with [rustup](https://rustup.rs).
+Go into the `harness` folder, and run `cargo build --release` for a slow compilation yielding an abundantly optimized harness, which is definitely unnecessary.
+
 ## CLI Arguments
 
 | short/long argument | meaning                                                                                                                                                                      | default       |
