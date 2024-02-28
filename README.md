@@ -22,6 +22,7 @@ Go into the `harness` folder, and run `cargo build --release` for a slow compila
 |                     | Can be provided multiple times to run multiple solutions.                                                                                                                    |               |
 | -c/clean            | Run the clean hook of the solutions                                                                                                                                          | false         |
 | --config            | The path of the config file to use                                                                                                                                           | config.toml   |
+| --dry               | Only print the solutions that would be ran, without running them.                                                                                                            | false         |
 
 ## AOC Token
 
