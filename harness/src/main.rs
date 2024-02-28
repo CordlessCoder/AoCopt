@@ -363,8 +363,16 @@ fn run_solution(
     let cmd = |command: &str| -> eyre::Result<Child> {
         Command::new(shell.as_ref())
             .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::inherit())
+            .stdout(if output == Output::Stdout {
+                Stdio::piped()
+            } else {
+                Stdio::inherit()
+            })
+            .stderr(if output == Output::Stderr {
+                Stdio::piped()
+            } else {
+                Stdio::inherit()
+            })
             .args(args.into_iter().map(|a| a.as_ref()))
             .arg(command)
             .spawn()
