@@ -28,6 +28,7 @@ desc = "I threw it together relatively quickly"
 path = "solutions/2023/Scala/Iter"
 build = "sbt package"
 exec = "if type 'scala3' &> /dev/null; then SCALA=scala3; else SCALA=scala; fi; $SCALA ./target/scala-3.4.0/aocone_3-0.jar"
+shell = ["sh", "-c"]
 clean = "sbt clean"
 
 [[2023.01.1]]

@@ -16,10 +16,11 @@ import scala.io.StdIn
       val num = digits.head * 10 + digits.last
       num
     }
+  val ans = answerWithIterator.sum
 
   val after = System.nanoTime()
 
-  println(answerWithIterator.sum)
+  println(ans)
   val diff = after - before
   println(s"Took $diff nanoseconds")
 }
