@@ -19,3 +19,13 @@ path = "solutions/2023/Rust/d1p1_manual_simd"
 build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
 exec = "./target/release/d1p1_manual_simd"
 clean = "cargo clean"
+
+[[2023.01.01]]
+lang = "Scala"
+name = "Basic Iterator Sln"
+desc = "I threw it together relatively quickly"
+
+path = "solutions/2023/Scala/Iter"
+build = "sbt package"
+exec = "scala ./target/scala-3.4.0/aocone_3-0.jar"
+clean = "sbt clean"

@@ -1,0 +1,25 @@
+package org.risa.aoc
+
+import scala.io.StdIn
+
+@main def main(): Unit = {
+  val str = Iterator
+    .continually(StdIn.readLine)
+    .takeWhile(_ != null)
+    .mkString("\n")
+
+  val before = System.nanoTime()
+
+  val answerWithIterator =
+    for line <- str.linesIterator yield {
+      val digits = line.filter(_.isDigit).map(_.toInt - 48).toList
+      val num = digits.head * 10 + digits.last
+      num
+    }
+
+  val after = System.nanoTime()
+
+  println(answerWithIterator.sum)
+  val diff = after - before
+  println(s"Took $diff nanoseconds")
+}
