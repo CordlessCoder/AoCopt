@@ -28,7 +28,7 @@ pub struct Arguments {
     /// Leave empty to run all defined solutions
     #[arg(long, short)]
     pub bench: Vec<String>,
-    /// Run the clean hooks of the solutions
+    /// Run the clean hook of the solutions
     #[arg(long, short)]
     pub clean: bool,
 }
