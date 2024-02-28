@@ -1,4 +1,5 @@
 use std::{
+    hint::black_box,
     io::{stdin, Read},
     time::Instant,
 };
@@ -20,6 +21,7 @@ fn solution(input: &str) -> u32 {
 fn main() {
     let mut buf = String::with_capacity(4096);
     stdin().read_to_string(&mut buf).unwrap();
+    _ = solution(black_box(&buf));
     let start = Instant::now();
     let res = solution(&buf);
     let took = start.elapsed().as_nanos();
