@@ -2,7 +2,7 @@ use std::{
     arch::x86_64::*,
     hint::black_box,
     io::{stdin, Read},
-    time::Instant,
+    time::{Duration, Instant},
 };
 
 fn get_first_and_last_bitmask(mask: u32) -> (u32, u32) {
@@ -194,12 +194,43 @@ fn widen_mask(mask: u32) -> __m256i {
     }
 }
 
+fn bench<I: Clone, T, F: FnMut(I) -> T>(
+    runtime: Duration,
+    mut function: F,
+    input: I,
+) -> (T, Duration) {
+    const MIN_SAMPLES: u32 = 100;
+    let start = Instant::now();
+    let mut res = function(input.clone());
+    let oneshot = start.elapsed();
+    let runs = runtime.as_secs_f64() / oneshot.as_secs_f64();
+    let per_sample = runs as u32 / MIN_SAMPLES;
+    let per_sample = per_sample.min(32).max(2);
+    macro_rules! sample {
+        () => {
+            for _ in 0..per_sample {
+                res = function(black_box(input.clone()));
+            }
+        };
+    }
+    let start = Instant::now();
+    sample!();
+    let sample_time = start.elapsed();
+    let samples = runtime.as_secs_f64() / sample_time.as_secs_f64();
+    let samples = samples.max(1.0) as u32;
+    let mut took = Duration::ZERO;
+    for _ in 0..samples {
+        let start = Instant::now();
+        sample!();
+        let sample_time = start.elapsed();
+        took += sample_time;
+    }
+    (res, took / samples / per_sample)
+}
 fn main() {
+    const RUNTIME: Duration = Duration::from_millis(128);
     let mut buf = String::with_capacity(8192);
     stdin().lock().read_to_string(&mut buf).unwrap();
-    _ = solution(black_box(&buf));
-    let start = Instant::now();
-    let res = solution(&buf);
-    let took = start.elapsed().as_nanos();
-    println!("{res}\n{took}");
+    let (res, took) = bench(RUNTIME, solution, &buf);
+    println!("{res}\n{nanos}", nanos = took.as_nanos());
 }
