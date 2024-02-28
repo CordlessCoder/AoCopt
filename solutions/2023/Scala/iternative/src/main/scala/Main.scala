@@ -11,8 +11,9 @@ object Main {
 
     val answerWithIterator =
       for line <- str.linesIterator yield {
-        val digits = line.filter(_.isDigit).map(_.toInt - 48).toList
-        val num = digits.head * 10 + digits.last
+        val first = line.iterator.filter(_.isDigit).map(_.toInt - 48).next()
+        val last = line.reverseIterator.filter(_.isDigit).map(_.toInt - 48).next()
+        val num = first * 10 + last
         num
       }
 
