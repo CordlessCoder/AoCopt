@@ -1,10 +1,7 @@
 import string
 
 def find_digits_first_last(s):
-    digits = []
-    for l in s:
-        if l in string.digits:
-            digits.append(l)
+    digits = [l for l in s if l in string.digits]
     return int("{}{}".format(digits[0], digits[-1]))
 
 cal_vals = []
