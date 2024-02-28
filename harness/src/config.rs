@@ -34,6 +34,9 @@ pub struct Arguments {
     /// The config file to use
     #[arg(long, default_value = "config.toml")]
     pub config: PathBuf,
+    /// Print the solutions that would be ran, without actually running them
+    #[arg(long)]
+    pub dry: bool,
 }
 
 fn get_true() -> bool {
@@ -122,7 +125,7 @@ fn default_time_regex() -> Regex {
 fn default_result_regex() -> Regex {
     Regex::new(r"(?m)^(\d+)[^\d]+\d+").expect("Default regex is invalid!")
 }
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Debug, Clone, Default, Copy, PartialEq)]
 pub enum Output {
     #[serde(alias = "stdout", alias = "STDOUT")]
     #[default]
