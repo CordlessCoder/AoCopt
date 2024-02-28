@@ -31,6 +31,9 @@ pub struct Arguments {
     /// Run the clean hook of the solutions
     #[arg(long, short)]
     pub clean: bool,
+    /// The config file to use
+    #[arg(long, default_value = "config.toml")]
+    pub config: PathBuf,
 }
 
 fn get_true() -> bool {
@@ -97,7 +100,7 @@ pub struct Solution {
     )]
     pub time_regex: Regex,
     #[serde(
-        alias = "time_pattern",
+        alias = "result_pattern",
         with = "serde_regex",
         default = "default_result_regex"
     )]

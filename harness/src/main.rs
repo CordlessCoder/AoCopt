@@ -187,12 +187,15 @@ fn main() -> eyre::Result<()> {
 
     let args = config::Arguments::parse();
 
-    let mut config =
-        File::open("config.toml").wrap_err("Couldn't open the config file, config.toml")?;
+    let mut config = File::open(&args.config)
+        .wrap_err_with(|| format!("Couldn't open the config file {file:?}", file = args.config))?;
     let mut buf = String::with_capacity(4096);
-    config
-        .read_to_string(&mut buf)
-        .wrap_err("Failed to read the config.toml file")?;
+    config.read_to_string(&mut buf).wrap_err_with(|| {
+        format!(
+            "Failed to read the config file {file:?}",
+            file = args.config
+        )
+    })?;
     let mut config: config::Config = toml::from_str(&buf).unwrap();
     let Some(mut year) = config.solutions.remove(&args.year) else {
         panic!("No solutions defined for {year}", year = args.year)
@@ -402,7 +405,8 @@ fn run_solution(
         .wrap_err_with(|| format!("Failed to capture the result"))?
         .as_str();
     let runtime = if time_externally {
-        runtime
+        // try to compensate for shell overhead
+        runtime.saturating_sub(shell_overhead)
     } else {
         let nanos: u64 = time_regex
             .captures(&output)
@@ -413,9 +417,6 @@ fn run_solution(
             .unwrap();
         Duration::from_nanos(nanos)
     };
-
-    // try to compensate for shell overhead
-    let runtime = runtime.saturating_sub(shell_overhead);
 
     try_run(post_hook.as_deref()).wrap_err("Error while executing build")?;
     if state.clean {
