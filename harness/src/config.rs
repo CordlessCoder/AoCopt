@@ -91,7 +91,7 @@ pub struct Solution {
     pub clean_hook: Option<String>,
     #[serde(alias = "custom_shell")]
     pub shell: Option<Vec<Cow<'static, str>>>,
-    #[serde(alias = "out")]
+    #[serde(alias = "out", default)]
     pub output: Output,
     #[serde(
         alias = "time_pattern",

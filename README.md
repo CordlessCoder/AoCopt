@@ -18,7 +18,11 @@ Just a couple of people optimizing AoC problems a bit too far.
 | -c/clean            | Run the clean hook of the solutions                                                                                                                                          | false         |
 | --config            | The path of the config file to use                                                                                                                                           | config.toml   |
 
-# Config
+## AOC Token
+
+You need to sign into AOC, and using the devtools of your browser grab the value of the `session` cookie.
+
+## Config
 
 ### Solution model
 
@@ -62,4 +66,19 @@ The harness will execute the steps defined by the solution in this order:\
 |    result_regex | string | `(?m)^(\d+)[^\d]+\d+` | The regex that will be used to capture the result out of the output. Uses the syntax of the Rust `regex` library.                                                                                                                                     |
 | time_externally | bool   | false                 | Whether to rely on the time the exec command takes as the runtime of the solution. Generally not recommended as internal timing is almost certainly far more accurate.                                                                                |
 
-# Defining solutions
+# Example
+
+Here's a complete config, with everything that's necessary to benchmark a Rust solution.
+
+```toml
+[[2023.01.1]]
+lang = "Rust"
+name = "Naive"
+desc = "A somewhat simple, iterator-based solution"
+
+path = "solutions/2023/Rust/d1p1_naive"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release'
+exec = "./target/release/d1p1_naive"
+clean = "cargo clean"
+```

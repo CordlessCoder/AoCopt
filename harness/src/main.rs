@@ -357,9 +357,17 @@ fn run_solution(
             .spawn()
             .wrap_err_with(|| format!("Failed to spawn shell {shell:?}"))
     };
-    let verbose_on_failure = |command: &str| -> eyre::Result<std::process::Output> {
+    let verbose_on_failure = |command: &str, input: &[u8]| -> eyre::Result<std::process::Output> {
         let start = Instant::now();
         let mut child = cmd(command)?;
+        let mut stdin = child
+            .stdin
+            .take()
+            .wrap_err("Failed to get stdin of child")?;
+        stdin
+            .write_all(input)
+            .wrap_err("Failed to write input into the stdin of the solution")?;
+        std::mem::drop(stdin);
         let output = loop {
             if start.elapsed() > state.command_timeout {
                 bail!(
@@ -383,15 +391,16 @@ fn run_solution(
 
     let try_run = |command: Option<&str>| -> eyre::Result<()> {
         if let Some(command) = command {
-            verbose_on_failure(&command)?;
+            verbose_on_failure(&command, b"")?;
         }
         Ok(())
     };
     try_run(build.as_deref()).wrap_err("Error while executing build")?;
     try_run(pre_hook.as_deref()).wrap_err("Error while executing pre_hook")?;
     let (_, shell_overhead) = time(|| cmd(""));
-    let (result, runtime) =
-        time(|| verbose_on_failure(&exec).wrap_err("Failed executing main solution"));
+    let (result, runtime) = time(|| {
+        verbose_on_failure(&exec, input.as_bytes()).wrap_err("Failed executing main solution")
+    });
     let result = result?;
 
     let output = match output {

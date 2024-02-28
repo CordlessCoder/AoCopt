@@ -1,24 +1,10 @@
-download_inputs = true
-command_timeout = 30
-input_path = "inputs"
-
 [[2023.01.1]]
 lang = "Rust"
 name = "Naive"
-desc = "A simple, iterator-based solution"
+desc = "A somewhat simple, iterator-based solution"
 
-build = "echo build"
-pre = "echo pre"
+path = "solutions/2023/Rust/d1p1_naive"
 
-exec = "echo 1 && echo 4000000"
-
-post = "echo post"
-clean = "echo clean"
-
-shell = ["sh", "-c"]
-
-out = "stdout"
-
-timing_regex = "(?m)^\\d+[^\\d]+(\\d+)"
-
-time_externally = false
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release'
+exec = "./target/release/d1p1_naive"
+clean = "cargo clean"
