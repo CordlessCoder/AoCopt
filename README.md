@@ -19,10 +19,4 @@ Just a couple of people optimizing AoC problems a bit too far.
 |                     | Can be provided multiple times to run multiple solutions.    |            |
 | -c/clean            | Run the clean hook of the solutions                          |
 
-```
-/// Run the clean hook of the solutions
-#[arg(long, short)]
-pub clean: bool,
-```
-
 # Defining solutions
