@@ -29,3 +29,12 @@ path = "solutions/2023/Scala/Iter"
 build = "sbt package"
 exec = "scala ./target/scala-3.4.0/aocone_3-0.jar"
 clean = "sbt clean"
+
+[[2023.01.01]]
+lang = "Scala"
+name = "IteratorNative"
+desc = "Basic iterator solution but native this time"
+path = "solutions/2023/Scala/iternative"
+build = "sbt package"
+exec = "./target/scala-3.3.1/iternative-out"
+clean = "sbt clean"
