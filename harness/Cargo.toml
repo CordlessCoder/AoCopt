@@ -16,4 +16,4 @@ reqwest = { version = "0.11.24", features = ["cookies", "blocking", "gzip", "bro
 serde = { version = "1.0.197", features = ["derive", "alloc"] }
 serde_regex = "1.1.0"
 serde_with = "3.6.1"
-toml = "0.8.10"
+toml = { version = "0.8.10", default-features = false, features = ["parse"] }

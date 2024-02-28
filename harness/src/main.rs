@@ -184,7 +184,14 @@ impl InputProvider for NetworkInputProvider {
 fn main() -> eyre::Result<()> {
     _ = dotenvy::from_path(".env");
     color_eyre::install()?;
-    let mut config: config::Config = toml::from_str(include_str!("../config.toml")).unwrap();
+
+    let mut config =
+        File::open("config.toml").wrap_err("Couldn't open the config file, config.toml")?;
+    let mut buf = String::with_capacity(4096);
+    config
+        .read_to_string(&mut buf)
+        .wrap_err("Failed to read the config.toml file")?;
+    let mut config: config::Config = toml::from_str(&buf).unwrap();
     let args = config::Arguments::parse();
     let Some(mut year) = config.solutions.remove(&args.year) else {
         panic!("No solutions defined for {year}", year = args.year)
