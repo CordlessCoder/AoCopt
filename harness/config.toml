@@ -1,0 +1,24 @@
+download_inputs = true
+command_timeout = 30
+input_path = "inputs"
+
+[[2023.01.1]]
+lang = "Rust"
+name = "Naive"
+desc = "A simple, iterator-based solution"
+
+build = "echo build"
+pre = "echo pre"
+
+exec = "echo 1 && echo 4000000"
+
+post = "echo post"
+clean = "echo clean"
+
+shell = ["sh", "-c"]
+
+out = "stdout"
+
+timing_regex = "(?m)^\\d+[^\\d]+(\\d+)"
+
+time_externally = false

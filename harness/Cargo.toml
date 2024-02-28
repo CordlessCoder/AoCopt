@@ -1,0 +1,19 @@
+[package]
+name = "harness"
+version = "0.1.0"
+edition = "2021"
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[dependencies]
+clap = { version = "4.5.1", features = ["derive", "env", "color", "cargo", "wrap_help"] }
+color-eyre = "0.6.2"
+dotenvy = "0.15.7"
+inquire = "0.7.0"
+regex = { version = "1.10.3", default-features = false, features = ["std", "unicode"] }
+reqwest = { version = "0.11.24", features = ["cookies", "blocking", "gzip", "brotli", "rustls-tls"], default-features = false }
+serde = { version = "1.0.197", features = ["derive", "alloc"] }
+serde_regex = "1.1.0"
+serde_with = "3.6.1"
+toml = "0.8.10"
