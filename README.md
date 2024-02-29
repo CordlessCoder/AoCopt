@@ -36,6 +36,11 @@ Any given solution is recorded with a specific year, day and part that it's asso
 The harness will execute the steps defined by the solution in this order:\
 `build -> pre_hook -> execute -> post_hook -> clean(if enabled with the -c CLI flag)`
 
+The task input will be provided into the stdin of the solution, followed by EOF.
+The solution needs to output two things: The result, and its runtime in nanoseconds as an integer.\
+A regex pattern will be used to extract both the result and the runtime using the first capture group.\
+That regex pattern can be changed per-solution. See the `result_regex` and `time_regex` solution configuration values.
+
 #### Global values
 
 |               key | type    | default   | meaning                                                                         |
