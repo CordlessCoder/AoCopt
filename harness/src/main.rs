@@ -66,12 +66,12 @@ impl InputProvider for FilesystemInputProvider {
             .unwrap_or(0);
         let dir = &dir[..end];
         let dir = Path::new(OsStr::from_bytes(dir));
-        if !dir.exists() {
-            if prompt_confirmation(format!(
+        if !dir.exists()
+            && prompt_confirmation(format!(
                 "The input folder at {dir:?} does not exist. Do you want to create it?"
-            ))? {
-                std::fs::create_dir_all(dir)?;
-            }
+            ))?
+        {
+            std::fs::create_dir_all(dir)?;
         }
         let mut file = File::create(path)?;
         file.write_all(input.as_bytes())?;
@@ -92,13 +92,13 @@ impl InputProvider for FilesystemInputProvider {
 pub struct NetworkInputProvider {
     client: Client,
 }
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct MultipleInputProvider {
     providers: Vec<Box<dyn InputProvider>>,
 }
 impl MultipleInputProvider {
     pub fn new() -> Self {
-        Self { providers: vec![] }
+        Self::default()
     }
     pub fn push(&mut self, provider: Box<dyn InputProvider>) {
         self.providers.push(provider)
