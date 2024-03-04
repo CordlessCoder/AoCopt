@@ -255,7 +255,7 @@ fn main() -> eyre::Result<()> {
     let filesystem_provider = FilesystemInputProvider::new(config.input_path.clone());
     input_provider.push(Box::new(filesystem_provider));
     if let Some(aoc_token) = args.aoc_token.as_ref() {
-        let network_provider = NetworkInputProvider::new(aoc_token, config.req_timeout.clone());
+        let network_provider = NetworkInputProvider::new(aoc_token, config.req_timeout);
         input_provider.push(Box::new(network_provider));
     }
     let mut state = State {
@@ -336,25 +336,21 @@ fn run_solution(
     state.input_provider.save_input(year, day, &input)?;
 
     // Build step
-    const DEFAULT_SHELL: &'static [Cow<'static, str>] = if cfg!(target_os = "windows") {
+    const DEFAULT_SHELL: &[Cow<'static, str>] = if cfg!(target_os = "windows") {
         &[Cow::Borrowed("cmd"), Cow::Borrowed("/C")]
     } else {
         &[Cow::Borrowed("sh"), Cow::Borrowed("-c")]
     };
 
-    let _guard = if let Some(path) = path {
+    let mut _guard = None;
+    if let Some(path) = path {
         let restore_to = current_dir().wrap_err(
             "Failed to get current working directory to later restore out directory to it.",
         )?;
         std::env::set_current_dir(&path).wrap_err_with(|| format!("Failed to change the current working directory to {path:?}, as specified in the config.")).suggestion("Make sure the path is valid in the current location")?;
-        Some(PathGuard { restore_to })
-    } else {
-        None
+        _guard = Some(PathGuard { restore_to });
     };
-    let shell = shell
-        .as_ref()
-        .map(|s| s.as_slice())
-        .unwrap_or(DEFAULT_SHELL);
+    let shell = shell.as_deref().unwrap_or(DEFAULT_SHELL);
     let (shell, args) = shell
         .split_first()
         .wrap_err_with(|| format!("The shell is empty"))
@@ -373,7 +369,7 @@ fn run_solution(
             } else {
                 Stdio::inherit()
             })
-            .args(args.into_iter().map(|a| a.as_ref()))
+            .args(args.iter().map(|a| a.as_ref()))
             .arg(command)
             .spawn()
             .wrap_err_with(|| format!("Failed to spawn shell {shell:?}"))
@@ -414,7 +410,7 @@ fn run_solution(
 
     let try_run = |command: Option<&str>| -> eyre::Result<()> {
         if let Some(command) = command {
-            verbose_on_failure(&command, b"")?;
+            verbose_on_failure(command, b"")?;
         }
         Ok(())
     };
