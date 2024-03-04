@@ -403,8 +403,10 @@ fn run_solution(
         };
         if !output.status.success() {
             bail!(
-                "Child process didn't exit with a non-zero status {status}. Command was {command:?}",
-                status = output.status
+                "Child process didn't exit with a non-zero status {status}. Command was {command:?}.\n stdout: {out}\n stderr: {err}",
+                status = output.status,
+                out = String::from_utf8_lossy(&output.stdout),
+                err = String::from_utf8_lossy(&output.stderr),
             )
         }
         Ok(output)

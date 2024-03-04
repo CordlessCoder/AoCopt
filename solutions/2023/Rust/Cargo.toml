@@ -1,0 +1,7 @@
+[workspace]
+members = [ "d*p*"]
+resolver = "1"
+exclude = ["aoc_util"]
+
+[workspace.dependencies]
+aoc_util = { path = "aoc_util" }

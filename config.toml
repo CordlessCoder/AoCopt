@@ -6,7 +6,18 @@ desc = "A somewhat simple, iterator-based solution"
 path = "solutions/2023/Rust/d1p1_naive"
 
 build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
-exec = "./target/release/d1p1_naive"
+exec = "../target/release/d1p1_naive"
+clean = "cargo clean"
+
+[[2023.01.1]]
+lang = "Rust"
+name = "Iterator"
+desc = "An iterator-based solution"
+
+path = "solutions/2023/Rust/d1p1_onepass"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../target/release/d1p1_onepass"
 clean = "cargo clean"
 
 [[2023.01.1]]
@@ -17,8 +28,19 @@ desc = "An implementation specific to x86-64 using mostly branchless operations 
 path = "solutions/2023/Rust/d1p1_manual_simd"
 
 build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
-exec = "./target/release/d1p1_manual_simd"
+exec = "../target/release/d1p1_manual_simd"
 clean = "cargo clean"
+
+[[2023.01.1]]
+lang = "C"
+name = "Naive"
+desc = "Every second of writing this was excrutiating and I never want to do it again."
+
+path = "solutions/2023/C/d1p1_basic"
+
+build = 'make build'
+exec = "./d1p1"
+clean = "make clean"
 
 [[2023.01.1]]
 lang = "Scala"
@@ -41,3 +63,14 @@ path = "solutions/2023/Scala/iternative"
 build = "sbt nativeLink"
 exec = "./target/scala-3.3.1/iternative-out"
 clean = "sbt clean"
+
+[[2023.04.1]]
+lang = "Rust"
+name = "Basic"
+desc = "A somewhat simple solution using parser combinators(winnow)"
+
+path = "solutions/2023/Rust/d4p1"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../target/release/d4p1"
+clean = "cargo clean"
