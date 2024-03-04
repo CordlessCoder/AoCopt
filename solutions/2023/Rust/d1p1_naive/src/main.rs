@@ -5,9 +5,9 @@ fn solution(input: &str) -> u32 {
         .as_bytes()
         .split(|&b| b == b'\n')
         .map(|line| {
-            let mut iter = line.iter().copied();
-            let first = iter.find(|&b| b <= b'9').unwrap_or(0);
-            let last = iter.rfind(|&b| b <= b'9').unwrap_or(first);
+            let mut iter = line.iter().copied().filter(|&b| b <= b'0');
+            let first = iter.next().unwrap_or(0);
+            let last = iter.next_back().unwrap_or(first);
             ((first & 0xf) as u32, (last & 0xf) as u32)
         })
         .fold((0, 0), |(first, last), (f, l)| (first + f, last + l));
