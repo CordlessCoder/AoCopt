@@ -81,6 +81,8 @@ That regex pattern can be changed per-solution. See the `result_regex` and `time
 
 Here's a complete config, with everything that's necessary to benchmark a Rust solution.
 
+Throw it into `config.toml` or whatever path you specified with `--config`.
+
 ```toml
 [[2023.01.1]]
 lang = "Rust"
