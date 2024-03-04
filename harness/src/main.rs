@@ -90,7 +90,7 @@ impl InputProvider for FilesystemInputProvider {
 }
 #[derive(Debug, Clone)]
 pub struct NetworkInputProvider {
-    client: Client,
+    client: Option<Client>,
 }
 #[derive(Debug, Default)]
 pub struct MultipleInputProvider {
@@ -106,8 +106,7 @@ impl MultipleInputProvider {
 }
 impl InputProvider for MultipleInputProvider {
     fn fetch_input(&self, year: u16, day: u8) -> eyre::Result<Option<String>> {
-        let mut last_error =
-            eyre::eyre!("No providers could find this task").suggestion("Did you set AOC_TOKEN?");
+        let mut last_error = eyre::eyre!("No providers could find this task");
         for provider in &self.providers {
             match provider.fetch_input(year, day) {
                 Ok(Some(input)) => return Ok(Some(input)),
@@ -140,6 +139,9 @@ impl InputProvider for MultipleInputProvider {
     }
 }
 impl NetworkInputProvider {
+    pub fn no_creds() -> Self {
+        Self { client: None }
+    }
     pub fn new(session: &str, timeout: Duration) -> Self {
         let jar = Jar::default();
         let jar = Arc::new(jar);
@@ -154,6 +156,7 @@ impl NetworkInputProvider {
             .brotli(true)
             .build()
             .unwrap();
+        let client = Some(client);
         Self { client }
     }
 }
@@ -165,9 +168,12 @@ impl InputProvider for NetworkInputProvider {
         Ok(())
     }
     fn fetch_input(&self, year: u16, day: u8) -> eyre::Result<Option<String>> {
+        let Some(client) = &self.client else {
+            return Err(eyre::eyre!("No AoC credentials(token) provided.").suggestion("Provide AOC_TOKEN as an environment variable, or as an argument `--aoc_token`.\nSee https://github.com/CordlessCoder/AoCopt?tab=readme-ov-file#aoc-token for help."));
+        };
         let addr = format!("https://adventofcode.com/{year}/day/{day}/input");
         Ok(Some(
-            self.client
+            client
                 .get(&addr)
                 .send()
                 .wrap_err_with(|| format!("Failed to fetch input from {addr}"))
@@ -209,6 +215,16 @@ fn main() -> eyre::Result<()> {
     };
     if let Some(part) = args.part {
         day.retain(|p, _| **p == part);
+    }
+    if !args.lang.is_empty() {
+        day.iter_mut().for_each(|(_, solutions)| {
+            solutions.retain(|sol| {
+                args.lang
+                    .iter()
+                    .any(|lang| sol.language.eq_ignore_ascii_case(lang))
+            })
+        });
+        day.retain(|_, sol| !sol.is_empty());
     }
     if day.is_empty() {
         panic!(
@@ -257,6 +273,8 @@ fn main() -> eyre::Result<()> {
     if let Some(aoc_token) = args.aoc_token.as_ref() {
         let network_provider = NetworkInputProvider::new(aoc_token, config.req_timeout);
         input_provider.push(Box::new(network_provider));
+    } else {
+        input_provider.push(Box::new(NetworkInputProvider::no_creds()));
     }
     let mut state = State {
         input_provider: Box::new(input_provider),

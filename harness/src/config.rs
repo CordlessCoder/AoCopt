@@ -9,32 +9,36 @@ use serde_with::{formats::Flexible, serde_as, DurationSeconds};
 pub use deserialize::DeserFromStr;
 
 #[derive(Parser, Debug, Clone)]
-/// My comfy AoC benchmarking and testing harness
+/// My comfy AoC benchmarking and testing harness. Enjoy!
 pub struct Arguments {
-    /// The year to run tests for
-    #[arg(short, default_value_t = 2023, value_parser = clap::value_parser!(u16).range(2015..))]
+    /// The year to run tests for.
+    #[arg(short, long, default_value_t = 2023, value_parser = clap::value_parser!(u16).range(2015..))]
     pub year: u16,
-    /// The day to run tests for
-    #[arg(short, value_parser = clap::value_parser!(u8).range(1..=31))]
+    /// The day to run tests for.
+    #[arg(short, value_parser = clap::value_parser!(u8).range(1..=31), default_value_t = 1)]
     pub day: u8,
-    /// The part(s) to run tests for
-    /// Runs all parts if not specified
+    /// The part(s) to run tests for.
+    /// Runs all parts if not specified.
     #[arg(short, value_parser = clap::value_parser!(u8).range(1..=2))]
     pub part: Option<u8>,
+    /// The languages to run the tests for.
+    /// Runs all languages if not specified.
+    #[arg(short, long)]
+    pub lang: Vec<String>,
     /// The AOC session token to use for downloading inputs
     #[arg(env, long)]
     pub aoc_token: Option<String>,
-    /// The solutions to attempt running
-    /// Leave empty to run all defined solutions
+    /// The solutions to attempt running.
+    /// Leave empty to run all defined solutions.
     #[arg(long, short)]
     pub bench: Vec<String>,
-    /// Run the clean hook of the solutions
+    /// Run the clean hook of the solutions.
     #[arg(long, short)]
     pub clean: bool,
-    /// The config file to use
+    /// The config file to use.
     #[arg(long, default_value = "config.toml")]
     pub config: PathBuf,
-    /// Print the solutions that would be ran, without actually running them
+    /// Print the solutions that would be ran, without actually running them.
     #[arg(long)]
     pub dry: bool,
 }

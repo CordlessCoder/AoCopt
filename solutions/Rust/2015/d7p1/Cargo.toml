@@ -1,0 +1,9 @@
+[package]
+name = "d7p1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aoc_util = {workspace = true}
+strum = { version = "0.26.1", features = ["derive", "phf"] }
+winnow = { version = "0.6.5", features = ["simd"] }

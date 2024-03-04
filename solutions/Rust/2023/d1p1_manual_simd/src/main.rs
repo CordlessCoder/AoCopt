@@ -119,7 +119,7 @@ pub fn solution(text: &str) -> u32 {
                     first_mask = 0;
                     if last_mask == 0 {
                         // We didn't find a new last digit, use the one we saved
-                        total_last += state as u32;
+                        total_last += state;
                     }
                 }
 
@@ -134,7 +134,7 @@ pub fn solution(text: &str) -> u32 {
             }
             if newlines != 0 {
                 // Some newlines were not captured. Save the last state
-                total_last += state.take().unwrap_or(0) as u32;
+                total_last += state.take().unwrap_or(0);
             }
             let first_digits = _mm256_blendv_epi8(zero, vdigits, widen_mask(first_digits));
 
@@ -189,8 +189,7 @@ fn widen_mask(mask: u32) -> __m256i {
         let vmask2 = _mm256_shuffle_epi8(vmask1, shuffle);
         let bit_mask = _mm256_set1_epi64x(0x7F_BF_DF_EF_F7_FB_FD_FE);
         let vmask3 = _mm256_or_si256(vmask2, bit_mask);
-        let vmask4 = _mm256_cmpeq_epi8(vmask3, _mm256_set1_epi8(-1));
-        vmask4
+        _mm256_cmpeq_epi8(vmask3, _mm256_set1_epi8(-1))
     }
 }
 
