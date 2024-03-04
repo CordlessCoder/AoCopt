@@ -1,13 +1,10 @@
 fn solution(input: &str) -> u32 {
-    let mut bytes = input.bytes().enumerate();
+    let mut bytes = input.bytes();
     let lines = std::iter::from_fn(|| {
         if bytes.len() == 0 {
             return None;
         };
-        let line = bytes
-            .by_ref()
-            .take_while(|(_, byte)| *byte != b'\n')
-            .map(|(_, byte)| byte);
+        let line = bytes.by_ref().take_while(|byte| *byte != b'\n');
 
         let mut digits = line
             .map(|byte| byte.wrapping_sub(b'0'))
