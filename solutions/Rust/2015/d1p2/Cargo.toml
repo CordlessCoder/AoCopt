@@ -1,0 +1,7 @@
+[package]
+name = "d1p2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aoc_util = {workspace = true}
