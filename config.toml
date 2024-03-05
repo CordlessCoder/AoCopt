@@ -168,3 +168,13 @@ path = "solutions/Go/2023/d1_basic"
 build = "go build -ldflags='-s -w'"
 exec = "./program"
 clean = "go clean"
+
+[[2023.01.1]]
+lang = "Elixir"
+name = "Lol regex approach"
+desc = "Kind of bad regex solution"
+
+path = "solutions/Elixir/2023/aoc"
+build = "mix deps.get; mix escript.build"
+exec = "./aoc d1"
+clean = "mix clean"
