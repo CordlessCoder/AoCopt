@@ -202,7 +202,8 @@ fn main() -> eyre::Result<()> {
             file = args.config
         )
     })?;
-    let mut config: config::Config = toml::from_str(&buf).unwrap();
+    let mut config: config::Config =
+        toml::from_str(&buf).wrap_err("Failed to parse config file")?;
     let Some(mut year) = config.solutions.remove(&args.year) else {
         panic!("No solutions defined for {year}", year = args.year)
     };
@@ -461,7 +462,7 @@ fn run_solution(
             .wrap_err_with(|| format!("Failed to capture the timing"))?
             .as_str()
             .parse()
-            .unwrap();
+            .wrap_err("Failed to parse runtime from solution output")?;
         Duration::from_nanos(nanos)
     };
 
