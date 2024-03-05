@@ -165,6 +165,6 @@ name = "Basic Approach"
 desc = "I threw this together"
 
 path = "solutions/Go/2023/d1_basic"
-build = "go build -ldflags='-s -w' -o d1 d1.go"
-exec = "./d1"
+build = "go build -ldflags='-s -w' -o program d1.go"
+exec = "./program"
 clean = "go clean"
