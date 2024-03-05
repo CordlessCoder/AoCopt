@@ -1,0 +1,2 @@
+/Users/ckdillard/IdeaProjects/AoCopt/solutions/2023/Dotnet/DayOne/bin/Release/net8.0/osx-arm64/publish/DayOne
+/Users/ckdillard/IdeaProjects/AoCopt/solutions/2023/Dotnet/DayOne/bin/Release/net8.0/osx-arm64/publish/DayOne.pdb

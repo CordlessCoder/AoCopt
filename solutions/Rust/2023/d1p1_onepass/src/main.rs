@@ -3,12 +3,10 @@ fn solution(input: &str) -> u32 {
     let lines = std::iter::from_fn(|| {
         if bytes.len() == 0 {
             return None;
-        };
-        let line = bytes.by_ref().take_while(|byte| *byte != b'\n');
+        }
+        let line = bytes.by_ref().take_while(|&byte| byte != b'\n');
 
-        let mut digits = line
-            .map(|byte| byte.wrapping_sub(b'0'))
-            .filter(|&byte| byte <= 9);
+        let mut digits = line.filter(u8::is_ascii_digit).map(|byte| byte - b'0');
 
         let first = digits.next().unwrap_or(0);
         let last = digits.last().unwrap_or(first);
