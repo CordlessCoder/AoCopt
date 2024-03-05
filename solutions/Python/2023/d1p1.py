@@ -8,7 +8,7 @@ start = time_ns()
 
 sum = 0
 
-for line in input.split():
+for line in input.split(b"\n"):
     digits = (c - 48 for c in line if 48 <= c <= 67)
     digits_reversed = (c - 48 for c in reversed(line) if 48 <= c <= 67)
 

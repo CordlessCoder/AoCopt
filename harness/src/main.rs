@@ -262,6 +262,7 @@ fn main() -> eyre::Result<()> {
             println!("Executing {year} day {day} part {part}");
             for sol in solutions {
                 print_solution(&sol.name, &sol.language, sol.description.as_deref());
+                println!("")
             }
         }
         return Ok(());
@@ -288,7 +289,7 @@ fn main() -> eyre::Result<()> {
             match run_solution(&mut state, year, day, sol) {
                 Ok((runtime, output)) => {
                     println!(
-                        "Took {time:?}, output: {out}",
+                        "Took {time:?}, output: {out}\n",
                         time = runtime.yellow(),
                         out = output.green()
                     );

@@ -1,9 +1,4 @@
-use std::{
-    arch::x86_64::*,
-    hint::black_box,
-    io::{stdin, Read},
-    time::{Duration, Instant},
-};
+use std::arch::x86_64::*;
 
 fn get_first_and_last_bitmask(mask: u32) -> (u32, u32) {
     if mask == 0 {
@@ -14,38 +9,36 @@ fn get_first_and_last_bitmask(mask: u32) -> (u32, u32) {
     (1 << first_idx, (u32::MAX << (u32::BITS - 1)) >> last_idx)
 }
 
-pub fn solve_iter(mut input: &[u8], last: Option<u32>) -> (u32, u32) {
-    if input.is_empty() {
-        return (0, 0);
-    };
+pub fn solve_iter(input: &[u8], last: Option<u32>) -> (u32, u32) {
+    let mut bytes = input.iter();
     let last = if let Some(last) = last {
-        let skip = input
-            .iter()
-            // SAFETY: skip < input.len()
-            .position(|&b| b == b'\n')
-            // SAFETY: skip + 1 == input.len()
-            .unwrap_or(input.len() - 1);
-        // SAFETY: skip and skip + 1 are both <= input.len()
-        let chunk = unsafe { input.get_unchecked(..skip) };
-        input = unsafe { input.get_unchecked(skip + 1..) };
-        chunk
-            .iter()
-            .copied()
-            .rfind(|&b| b <= b'9')
-            .map(|b| (b - b'0') as u32)
-            .unwrap_or(last)
+        let line = bytes.by_ref().take_while(|&&byte| byte != b'\n');
+
+        let digits = line
+            .map(|byte| byte.wrapping_sub(b'0'))
+            .filter(|&byte| byte <= 9);
+
+        digits.last().map(|b| b as u32).unwrap_or(last)
     } else {
         0
     };
-    input
-        .split(|&b| b == b'\n')
-        .map(|line| {
-            let mut iter = line.iter().copied();
-            let first = iter.find(|&b| b <= b'9').unwrap_or(b'0');
-            let last = iter.rfind(|&b| b <= b'9').unwrap_or(first);
-            ((first - b'0') as u32, (last - b'0') as u32)
-        })
-        .fold((0, last), |(first, last), (nf, nl)| (first + nf, last + nl))
+    let lines = std::iter::from_fn(|| {
+        if bytes.len() == 0 {
+            return None;
+        };
+        let line = bytes.by_ref().take_while(|&&byte| byte != b'\n');
+
+        let mut digits = line
+            .map(|byte| byte.wrapping_sub(b'0'))
+            .filter(|&byte| byte <= 9);
+
+        let first = digits.next().unwrap_or(0);
+        let last = digits.last().unwrap_or(first);
+        Some((first, last))
+    });
+    lines.fold((0, last), |(first, last), (nf, nl)| {
+        (first + nf as u32, last + nl as u32)
+    })
 }
 
 pub fn solution(text: &str) -> u32 {
@@ -193,43 +186,6 @@ fn widen_mask(mask: u32) -> __m256i {
     }
 }
 
-fn bench<I: Clone, T, F: FnMut(I) -> T>(
-    runtime: Duration,
-    mut function: F,
-    input: I,
-) -> (T, Duration) {
-    const MIN_SAMPLES: u32 = 100;
-    let start = Instant::now();
-    let mut res = function(input.clone());
-    let oneshot = start.elapsed();
-    let runs = runtime.as_secs_f64() / oneshot.as_secs_f64();
-    let per_sample = runs as u32 / MIN_SAMPLES;
-    let per_sample = per_sample.min(32).max(2);
-    macro_rules! sample {
-        () => {
-            for _ in 0..per_sample {
-                res = function(black_box(input.clone()));
-            }
-        };
-    }
-    let start = Instant::now();
-    sample!();
-    let sample_time = start.elapsed();
-    let samples = runtime.as_secs_f64() / sample_time.as_secs_f64();
-    let samples = samples.max(1.0) as u32;
-    let mut took = Duration::ZERO;
-    for _ in 0..samples {
-        let start = Instant::now();
-        sample!();
-        let sample_time = start.elapsed();
-        took += sample_time;
-    }
-    (res, took / samples / per_sample)
-}
 fn main() {
-    const RUNTIME: Duration = Duration::from_millis(128);
-    let mut buf = String::with_capacity(8192);
-    stdin().lock().read_to_string(&mut buf).unwrap();
-    let (res, took) = bench(RUNTIME, solution, &buf);
-    println!("{res}\n{nanos}", nanos = took.as_nanos());
+    aoc_util::hook_solution(solution)
 }
