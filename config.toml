@@ -176,7 +176,7 @@ desc = "Fairly basic solution to only iterate over the input once"
 
 path = "solutions/Go/2023/d1p1_onepass"
 build = "go build -ldflags='-s -w'"
-exec = "./d1p1"
+exec = "./program"
 clean = "go clean"
 
 [[2023.01.1]]
