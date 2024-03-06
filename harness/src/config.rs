@@ -45,7 +45,7 @@ pub struct Arguments {
     #[arg(long)]
     pub nocolor: bool,
     /// The style used for the results table
-    #[arg(long, env = "TABLE_STYLE", default_value = "modern")]
+    #[arg(long, env = "TABLE_STYLE", default_value = "sharp")]
     pub table: TableStyle,
 }
 
