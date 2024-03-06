@@ -19,11 +19,11 @@ func main() {
 		reader = os.Stdin
 	}
 
-    stdin, err := io.ReadAll(reader)
-    if err != nil {
-        panic(err)
-    }
-    input := string(stdin)
+	stdin, err := io.ReadAll(reader)
+	if err != nil {
+		panic(err)
+	}
+	input := string(stdin)
 
 	start := time.Now()
 
