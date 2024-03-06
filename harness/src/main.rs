@@ -527,7 +527,7 @@ fn run_solution(
 struct DisplayDuration(Duration);
 impl Display for DisplayDuration {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.0.fmt(f)
+        write!(f, "{:.3?}", self.0)
     }
 }
 impl From<Duration> for DisplayDuration {
