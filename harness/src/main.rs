@@ -428,13 +428,19 @@ fn run_solution(
         &[Cow::Borrowed("sh"), Cow::Borrowed("-c")]
     };
 
-    let mut guard = None;
-    if let Some(path) = path {
+    let mut _original_directory_guard = None;
+    let path = path.as_ref().map(|path| PathGuard {
+        restore_to: path
+            .canonicalize()
+            .wrap_err("Failed to set path to the one specified in config.toml")
+            .unwrap(),
+    });
+    if let Some(ref path) = path {
         let restore_to = current_dir().wrap_err(
             "Failed to get current working directory to later restore out directory to it.",
         )?;
-        std::env::set_current_dir(path).wrap_err_with(|| format!("Failed to change the current working directory to {path:?}, as specified in the config.")).suggestion("Make sure the path is valid in the current location")?;
-        guard = Some(PathGuard { restore_to });
+        path.restore()?;
+        _original_directory_guard = Some(PathGuard { restore_to });
     };
     let shell = shell.as_deref().unwrap_or(DEFAULT_SHELL);
     let (shell, args) = shell
@@ -461,7 +467,7 @@ fn run_solution(
             .wrap_err_with(|| format!("Failed to spawn shell {shell:?}"))
     };
     let verbose_on_failure = |command: &str, input: &[u8]| -> eyre::Result<std::process::Output> {
-        guard.as_ref().map(PathGuard::restore);
+        path.as_ref().map(PathGuard::restore);
         let start = Instant::now();
         let mut child = cmd(command)?;
         let mut stdin = child
@@ -518,7 +524,7 @@ fn run_solution(
     let result = result_regex
         .captures(&output)
         .and_then(|cap| cap.get(1))
-        .wrap_err_with(|| format!("Failed to capture the result"))?
+        .wrap_err_with(|| format!("Failed to capture the result from output {output}"))?
         .as_str();
     let runtime = if *time_externally {
         // try to compensate for shell overhead

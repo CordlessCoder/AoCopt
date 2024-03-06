@@ -147,10 +147,10 @@ pub struct Solution {
     pub path: Option<PathBuf>,
 }
 fn default_time_regex() -> Regex {
-    Regex::new(r"(?m)^\d+[^\d]+(\d+)").expect("Default regex is invalid!")
+    Regex::new(r"(?m)[^\d]*\d+[^\d]+(\d+).*").expect("Default regex is invalid!")
 }
 fn default_result_regex() -> Regex {
-    Regex::new(r"(?m)^(\d+)[^\d]+\d+").expect("Default regex is invalid!")
+    Regex::new(r"(?m)[^\d]*(\d+)[^\d]+\d+.*").expect("Default regex is invalid!")
 }
 #[derive(Deserialize, Debug, Clone, Default, Copy, PartialEq)]
 pub enum Output {

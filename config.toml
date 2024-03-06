@@ -39,7 +39,7 @@ desc = "Every second of writing this was excrutiating and I never want to do it 
 path = "solutions/C/2023/d1p1_basic"
 
 build = 'make build'
-exec = "make run"
+exec = "./target/d1p1"
 clean = "make clean"
 
 [[2023.01.1]]
@@ -213,7 +213,19 @@ clean = "dotnet clean"
 [[2023.01.1]]
 lang = "Lua"
 name = "Regex"
-desc = "A luvit-lua solution."
+desc = "A simple solution relying on regex"
 
 path = "solutions/Lua/2023/d1p1"
-exec = "luvit Regex.lua"
+
+build = "cd ../../timing_lib;make"
+exec = "lua Regex.lua"
+
+[[2023.01.1]]
+lang = "LuaJIT"
+name = "Regex"
+desc = "A simple solution relying on regex"
+
+path = "solutions/Lua/2023/d1p1"
+
+build = "cd ../../timing_lib;make"
+exec = "luajit Regex.lua"
