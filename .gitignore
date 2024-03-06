@@ -21,3 +21,4 @@
 **/.metals
 **/program
 **/.direnv/
+**/.stack_work
