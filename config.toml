@@ -209,3 +209,11 @@ path = "solutions/Dotnet/2023/DayOne"
 build = "dotnet build -c Release"
 exec = "dotnet bin/Release/net8.0/DayOne.dll"
 clean = "dotnet clean"
+
+[[2023.01.1]]
+lang = "Lua"
+name = "Regex"
+desc = "A luvit-lua solution."
+
+path = "solutions/Lua/2023/d1p1"
+exec = "luvit Regex.lua"
