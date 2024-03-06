@@ -468,6 +468,7 @@ fn run_solution(
         std::mem::drop(stdin);
         let output = loop {
             if start.elapsed() > state.command_timeout {
+                _ = child.kill();
                 bail!(
                     "Command {command:?} timed out. Timeout is set to {timeout:?}",
                     timeout = state.command_timeout
