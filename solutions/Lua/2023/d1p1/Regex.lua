@@ -10,9 +10,9 @@ for line in input:gmatch ("[^\r\n]+") do
 end
 
 function getFirstAndLastNumber (str)
-    local first = string.match (str, "%d+")
-    local last = string.match (string.reverse (str), "%d+")
-    return first, last
+    local first = string.match (str, "%d")
+    local last = string.match (string.reverse (str), "%d")
+    return tonumber(first), tonumber(last)
 end
 
 for i = 1, #lines do
