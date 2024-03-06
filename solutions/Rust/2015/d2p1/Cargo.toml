@@ -5,4 +5,4 @@ edition = "2021"
 
 [dependencies]
 aoc_util = {workspace = true}
-winnow = { version = "0.6.5", features = ["simd"] }
+winnow = { workspace = true }
