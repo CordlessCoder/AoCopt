@@ -1,17 +1,21 @@
 CC ?= clang
 
+TARGET_DIR ?= target
 
-debug:
-	$(CC) main.c -o d1p1_debug -Wall -Wpedantic -Wconversion -O0 -g -fsanitize=address
+build: set_up_target
+	$(CC) main.c -o $(TARGET_DIR)/d1p1 -Wall -Wpedantic -O3 -march=native -static
 
-build:
-	$(CC) main.c -o d1p1 -Wall -Wpedantic -O3 -march=native -static
+set_up_target:
+	mkdir -p $(TARGET_DIR)
+
+debug: set_up_target
+	$(CC) main.c -o $(TARGET_DIR)/d1p1_debug -Wall -Wpedantic -Wconversion -O0 -g -fsanitize=address
 
 clean:
-	rm d1p1
+	rm $(TARGET_DIR)/d1p1
 
 rund: debug
-	./d1p1_debug
+	./$(TARGET_DIR)/d1p1_debug
 
 run: build
-	./d1p1
+	./$(TARGET_DIR)/d1p1
