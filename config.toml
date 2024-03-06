@@ -39,7 +39,7 @@ desc = "Every second of writing this was excrutiating and I never want to do it 
 path = "solutions/C/2023/d1p1_basic"
 
 build = 'make build'
-exec = "./d1p1"
+exec = "make run"
 clean = "make clean"
 
 [[2023.01.1]]
@@ -205,6 +205,7 @@ name = "Linq"
 desc = "Totally lazy Linq solution"
 
 path = "solutions/Dotnet/2023/DayOne"
+
 build = "dotnet build -c Release"
 exec = "dotnet bin/Release/net8.0/DayOne.dll"
 clean = "dotnet clean"
