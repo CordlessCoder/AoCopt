@@ -39,7 +39,7 @@ desc = "Every second of writing this was excrutiating and I never want to do it 
 path = "solutions/C/2023/d1p1_basic"
 
 build = 'make build'
-exec = "./d1p1"
+exec = "./target/d1p1"
 clean = "make clean"
 
 [[2023.01.1]]
@@ -170,6 +170,16 @@ exec = "./program"
 clean = "go clean"
 
 [[2023.01.1]]
+lang = "Golang"
+name = "Single pass"
+desc = "Fairly basic solution to only iterate over the input once"
+
+path = "solutions/Go/2023/d1p1_onepass"
+build = "go build -ldflags='-s -w'"
+exec = "./program"
+clean = "go clean"
+
+[[2023.01.1]]
 lang = "Haskell"
 name = "Naive and Simple"
 desc = "A simple solution, without much tought put into it"
@@ -181,7 +191,7 @@ clean = "stack clean"
 [[2023.01.1]]
 lang = "Haskell"
 name = "Recursive"
-desc = "Expects a correct input format"
+desc = "Requires knowledge about the input format"
 
 path = "solutions/Haskell/2023/d1p1/recursive"
 exec = "stack run"
@@ -203,6 +213,27 @@ name = "Linq"
 desc = "Totally lazy Linq solution"
 
 path = "solutions/Dotnet/2023/DayOne"
+
 build = "dotnet build -c Release"
 exec = "dotnet bin/Release/net8.0/DayOne.dll"
 clean = "dotnet clean"
+
+[[2023.01.1]]
+lang = "Lua"
+name = "Regex"
+desc = "A simple solution relying on regex"
+
+path = "solutions/Lua/2023/d1p1"
+
+build = "cd ../../timing_lib;make"
+exec = "lua Regex.lua"
+
+[[2023.01.1]]
+lang = "LuaJIT"
+name = "Regex"
+desc = "A simple solution relying on regex"
+
+path = "solutions/Lua/2023/d1p1"
+
+build = "cd ../../timing_lib;make"
+exec = "luajit Regex.lua"

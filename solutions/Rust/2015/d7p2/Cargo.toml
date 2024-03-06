@@ -6,4 +6,4 @@ edition = "2021"
 [dependencies]
 aoc_util = {workspace = true}
 strum = { version = "0.26.1", features = ["derive", "phf"] }
-winnow = { version = "0.6.5", features = ["simd"] }
+winnow = { workspace = true }

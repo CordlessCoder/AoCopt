@@ -1,37 +1,34 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"time"
 )
 
 func main() {
-	var input []string
 	debug := false
-	var scanner *bufio.Scanner
+	var reader io.Reader
 
 	if debug {
 		readFile, _ := os.Open("inputs.txt")
-		scanner = bufio.NewScanner(readFile)
+		reader = readFile
 	} else {
-		scanner = bufio.NewScanner(os.Stdin)
+		reader = os.Stdin
 	}
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		input = append(input, line)
-
-		if line == "" {
-			break
-		}
+	stdin, err := io.ReadAll(reader)
+	if err != nil {
+		panic(err)
 	}
+	input := string(stdin)
 
 	start := time.Now()
 
 	sum := 0
-	for _, line := range input {
+	for _, line := range strings.Split(input, "\n") {
 		for _, char := range line {
 			num := int(char - '0')
 

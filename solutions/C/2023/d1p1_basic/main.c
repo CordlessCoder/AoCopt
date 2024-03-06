@@ -1,9 +1,9 @@
-#include <bits/types/struct_timeval.h>
+#include <bits/time.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 
 #define DEFAULT_CAP 8192
@@ -77,15 +77,18 @@ start:
 int main(void) {
     Buffer input = read_input();
 
-    struct timeval tv;
+    struct timespec time;
+    clock_gettime(CLOCK_MONOTONIC, &time);
+    struct timespec start = time;
 
-    gettimeofday(&tv, NULL);
-    struct timeval start  = tv;
-    uint32_t       result = solve(input);
-    gettimeofday(&tv, NULL);
-    struct timeval end = tv;
-    printf("%d\n%ld", result,
-           (end.tv_sec * 1000000000 + end.tv_usec * 1000) - (start.tv_sec * 1000000000 + start.tv_usec * 1000));
+    uint32_t result = solve(input);
+
+    clock_gettime(CLOCK_MONOTONIC, &time);
+    struct timespec end = time;
+
+    uint64_t nanos = (uint64_t)((end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec);
+
+    printf("%d\n%ld", result, nanos);
 
     free(input.ptr);
 }

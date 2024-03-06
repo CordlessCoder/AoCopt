@@ -1,6 +1,4 @@
 defmodule Aoc.DayOne do
-  import Unicode.Guards
-
   def part_one do
     dev = false
 

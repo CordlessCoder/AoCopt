@@ -5,3 +5,5 @@ exclude = ["aoc_util"]
 
 [workspace.dependencies]
 aoc_util = { path = "aoc_util" }
+winnow = { version = "0.6.5", features = ["simd"] }
+memchr = "2.7.1"

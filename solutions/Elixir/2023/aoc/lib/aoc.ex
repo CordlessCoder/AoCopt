@@ -29,7 +29,7 @@ defmodule Aoc do
 
     case args do
       %{args: %{}} -> Optimus.parse!(optimus, ["--help"])
-      {[:d1], args} -> Aoc.DayOne.part_one()
+      {[:d1], _args} -> Aoc.DayOne.part_one()
     end
   end
 end
