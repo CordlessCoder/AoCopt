@@ -1,6 +1,6 @@
 local uv = require "uv"
 local input = io.read ("*all")
-local start = uv.hrtime ()
+local start = uv.hrtime ( )
 
 local result = 0
 local lines = { }
@@ -17,9 +17,9 @@ end
 
 for i = 1, #lines do
     local first, last = getFirstAndLastNumber (lines [i])
-    result = result + ((first*10) + last)
+    result = result + first * 10 + last
 end
 
-local stop = uv.hrtime ()
+local stop = uv.hrtime ( )
 print ("Result: "..result)
 print ("Benchmark: "..(stop - start)..'ns')
