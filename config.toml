@@ -170,7 +170,6 @@ exec = "./program"
 clean = "go clean"
 
 [[2023.01.1]]
-
 lang = "Haskell"
 name = "Naive and Simple"
 desc = "A simple solution, without much tought put into it"
@@ -190,6 +189,7 @@ build = "stack build"
 exec = "stack run"
 clean = "stack clean"
 
+[[2023.01.1]]
 lang = "Elixir"
 name = "Lol regex approach"
 desc = "Kind of bad regex solution"
