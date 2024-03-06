@@ -329,6 +329,16 @@ fn main() -> eyre::Result<()> {
             };
         }
     }
+    // Sort by runtime in ascending order, but put all 0 runtime solutions at the end as those
+    // failed
+    results.sort_by(|a, b| {
+        let a = a.runtime.0;
+        let b = b.runtime.0;
+        if b.is_zero() {
+            return std::cmp::Ordering::Less;
+        }
+        a.cmp(&b)
+    });
     let mut table = tabled::Table::new(results);
     match args.table {
         TableStyle::Modern => table.with(Style::modern()),
@@ -348,6 +358,7 @@ fn main() -> eyre::Result<()> {
         table.modify(Columns::new(0..1), tabled::settings::Color::FG_CYAN);
         table.modify(Columns::new(2..3), tabled::settings::Color::FG_MAGENTA);
     }
+    table.modify(Columns::new(2..3), tabled::settings::Alignment::right());
     println!("{table}");
     Ok(())
 }
