@@ -22,4 +22,4 @@
 **/program
 **/.direnv/
 **/.stack-work
-**/.stack.yaml.lock
+**/stack.yaml.lock
