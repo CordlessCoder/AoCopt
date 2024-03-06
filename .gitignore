@@ -21,4 +21,5 @@
 **/.metals
 **/program
 **/.direnv/
-**/.stack_work
+**/.stack-work
+**/.stack.yaml.lock
