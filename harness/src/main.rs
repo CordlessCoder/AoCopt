@@ -382,9 +382,14 @@ struct State {
 struct PathGuard {
     restore_to: PathBuf,
 }
+impl PathGuard {
+    pub fn restore(&self) -> std::io::Result<()> {
+        std::env::set_current_dir(&self.restore_to)
+    }
+}
 impl Drop for PathGuard {
     fn drop(&mut self) {
-        _ = std::env::set_current_dir(&self.restore_to)
+        _ = self.restore()
     }
 }
 
@@ -423,13 +428,13 @@ fn run_solution(
         &[Cow::Borrowed("sh"), Cow::Borrowed("-c")]
     };
 
-    let mut _guard = None;
+    let mut guard = None;
     if let Some(path) = path {
         let restore_to = current_dir().wrap_err(
             "Failed to get current working directory to later restore out directory to it.",
         )?;
         std::env::set_current_dir(path).wrap_err_with(|| format!("Failed to change the current working directory to {path:?}, as specified in the config.")).suggestion("Make sure the path is valid in the current location")?;
-        _guard = Some(PathGuard { restore_to });
+        guard = Some(PathGuard { restore_to });
     };
     let shell = shell.as_deref().unwrap_or(DEFAULT_SHELL);
     let (shell, args) = shell
@@ -456,6 +461,7 @@ fn run_solution(
             .wrap_err_with(|| format!("Failed to spawn shell {shell:?}"))
     };
     let verbose_on_failure = |command: &str, input: &[u8]| -> eyre::Result<std::process::Output> {
+        guard.as_ref().map(PathGuard::restore);
         let start = Instant::now();
         let mut child = cmd(command)?;
         let mut stdin = child
