@@ -170,6 +170,7 @@ exec = "./program"
 clean = "go clean"
 
 [[2023.01.1]]
+
 lang = "Haskell"
 name = "Naive and Simple"
 desc = "A simple solution, without much tought put into it"
@@ -178,3 +179,22 @@ path =  "solutions/Haskell/2023/naive"
 build = "stack build"
 exec = "stack run"
 clean = "stack clean"
+
+lang = "Elixir"
+name = "Lol regex approach"
+desc = "Kind of bad regex solution"
+
+path = "solutions/Elixir/2023/aoc"
+build = "mix deps.get; mix escript.build"
+exec = "./aoc d1"
+clean = "mix clean"
+
+[[2023.01.1]]
+lang = "CSharp"
+name = "Linq"
+desc = "Totally lazy Linq solution"
+
+path = "solutions/Dotnet/2023/DayOne"
+build = "dotnet build -c Release"
+exec = "dotnet bin/Release/net8.0/DayOne.dll"
+clean = "dotnet clean"
