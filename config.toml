@@ -191,7 +191,7 @@ clean = "stack clean"
 [[2023.01.1]]
 lang = "Haskell"
 name = "Recursive"
-desc = "Expects a correct input format"
+desc = "Requires knowledge about the input format"
 
 path = "solutions/Haskell/2023/d1p1/recursive"
 exec = "stack run"
