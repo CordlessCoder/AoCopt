@@ -185,7 +185,6 @@ name = "Naive and Simple"
 desc = "A simple solution, without much tought put into it"
 
 path = "solutions/Haskell/2023/d1p1/naive"
-build = "stack build"
 exec = "stack run"
 clean = "stack clean"
 
@@ -195,7 +194,6 @@ name = "Recursive"
 desc = "Expects a correct input format"
 
 path = "solutions/Haskell/2023/d1p1/recursive"
-build = "stack build"
 exec = "stack run"
 clean = "stack clean"
 
