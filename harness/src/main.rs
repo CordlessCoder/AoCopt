@@ -2,7 +2,7 @@ use std::{
     borrow::Cow,
     env::current_dir,
     ffi::OsStr,
-    fmt::Debug,
+    fmt::{Debug, Display},
     fs::File,
     io::{Read, Write},
     os::unix::ffi::OsStrExt,
@@ -23,6 +23,12 @@ use reqwest::blocking::{Client, ClientBuilder};
 use reqwest::cookie::Jar;
 
 use config::{DeserFromStr, Output, Solution};
+use tabled::{
+    settings::{object::Columns, Style},
+    Tabled,
+};
+
+use crate::config::TableStyle;
 
 mod config;
 
@@ -189,9 +195,12 @@ impl InputProvider for NetworkInputProvider {
 
 fn main() -> eyre::Result<()> {
     _ = dotenvy::from_path(".env");
-    color_eyre::install()?;
 
-    let args = config::Arguments::parse();
+    let mut args = config::Arguments::parse();
+    args.nocolor |= dotenvy::var("NO_COLOR").is_ok();
+    let args = args;
+
+    color_eyre::install()?;
 
     let mut config = File::open(&args.config)
         .wrap_err_with(|| format!("Couldn't open the config file {file:?}", file = args.config))?;
@@ -283,22 +292,63 @@ fn main() -> eyre::Result<()> {
         clean: args.clean,
         command_timeout: config.command_timeout,
     };
+    let mut results = Vec::new();
     for (DeserFromStr(part), solutions) in to_run {
         println!("Executing {year} day {day} part {part}");
         for sol in solutions {
             print_solution(&sol.name, &sol.language, sol.description.as_deref());
-            match run_solution(&mut state, year, day, sol) {
+            match run_solution(&mut state, year, day, &sol) {
                 Ok((runtime, output)) => {
                     println!(
                         "Took {time:?}, output: {out}\n",
                         time = runtime.yellow(),
                         out = output.green()
                     );
+                    let Solution { language, name, .. } = sol;
+                    results.push(SolutionResult {
+                        language,
+                        name,
+                        output,
+                        runtime: runtime.into(),
+                    });
                 }
-                Err(err) => println!("{} {err:?}", "Failed to run solution:".red().bold()),
+                Err(err) => {
+                    println!("{} {err:?}", "Failed to run solution:".red().bold());
+                    let Solution { language, name, .. } = sol;
+                    results.push(SolutionResult {
+                        language,
+                        name,
+                        output: if args.nocolor {
+                            "DNF".to_string()
+                        } else {
+                            "DNF".bright_red().to_string()
+                        },
+                        runtime: Duration::ZERO.into(),
+                    });
+                }
             };
         }
     }
+    let mut table = tabled::Table::new(results);
+    match args.table {
+        TableStyle::Modern => table.with(Style::modern()),
+        TableStyle::ModernRounded => table.with(Style::modern_rounded()),
+        TableStyle::PSql => table.with(Style::psql()),
+        TableStyle::ReRestructuredText => table.with(Style::re_structured_text()),
+        TableStyle::Markdown => table.with(Style::markdown()),
+        TableStyle::Ascii => table.with(Style::ascii()),
+        TableStyle::AsciiRounded => table.with(Style::ascii_rounded()),
+        TableStyle::Dots => table.with(Style::dots()),
+        TableStyle::Blank => table.with(Style::blank()),
+        TableStyle::TwoLine => table.with(Style::extended()),
+        TableStyle::Sharp => table.with(Style::sharp()),
+        TableStyle::Rounded => table.with(Style::rounded()),
+    };
+    if !args.nocolor {
+        table.modify(Columns::new(0..1), tabled::settings::Color::FG_CYAN);
+        table.modify(Columns::new(2..3), tabled::settings::Color::FG_MAGENTA);
+    }
+    println!("{table}");
     Ok(())
 }
 fn print_solution(name: &str, language: &str, description: Option<&str>) {
@@ -331,7 +381,7 @@ fn run_solution(
     state: &mut State,
     year: u16,
     day: u8,
-    solution: Solution,
+    solution: &Solution,
 ) -> eyre::Result<(Duration, String)> {
     let Solution {
         build,
@@ -367,7 +417,7 @@ fn run_solution(
         let restore_to = current_dir().wrap_err(
             "Failed to get current working directory to later restore out directory to it.",
         )?;
-        std::env::set_current_dir(&path).wrap_err_with(|| format!("Failed to change the current working directory to {path:?}, as specified in the config.")).suggestion("Make sure the path is valid in the current location")?;
+        std::env::set_current_dir(path).wrap_err_with(|| format!("Failed to change the current working directory to {path:?}, as specified in the config.")).suggestion("Make sure the path is valid in the current location")?;
         _guard = Some(PathGuard { restore_to });
     };
     let shell = shell.as_deref().unwrap_or(DEFAULT_SHELL);
@@ -379,12 +429,12 @@ fn run_solution(
     let cmd = |command: &str| -> eyre::Result<Child> {
         Command::new(shell.as_ref())
             .stdin(Stdio::piped())
-            .stdout(if output == Output::Stdout {
+            .stdout(if *output == Output::Stdout {
                 Stdio::piped()
             } else {
                 Stdio::inherit()
             })
-            .stderr(if output == Output::Stderr {
+            .stderr(if *output == Output::Stderr {
                 Stdio::piped()
             } else {
                 Stdio::inherit()
@@ -438,7 +488,7 @@ fn run_solution(
     try_run(pre_hook.as_deref()).wrap_err("Error while executing pre_hook")?;
     let (_, shell_overhead) = time(|| cmd(""));
     let (result, runtime) = time(|| {
-        verbose_on_failure(&exec, input.as_bytes()).wrap_err("Failed executing main solution")
+        verbose_on_failure(exec, input.as_bytes()).wrap_err("Failed executing main solution")
     });
     let result = result?;
 
@@ -452,7 +502,7 @@ fn run_solution(
         .and_then(|cap| cap.get(1))
         .wrap_err_with(|| format!("Failed to capture the result"))?
         .as_str();
-    let runtime = if time_externally {
+    let runtime = if *time_externally {
         // try to compensate for shell overhead
         runtime.saturating_sub(shell_overhead)
     } else {
@@ -472,6 +522,30 @@ fn run_solution(
     }
 
     Ok((runtime, result.to_string()))
+}
+
+struct DisplayDuration(Duration);
+impl Display for DisplayDuration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.0.fmt(f)
+    }
+}
+impl From<Duration> for DisplayDuration {
+    fn from(value: Duration) -> Self {
+        Self(value)
+    }
+}
+impl From<DisplayDuration> for Duration {
+    fn from(value: DisplayDuration) -> Self {
+        value.0
+    }
+}
+#[derive(Tabled)]
+struct SolutionResult {
+    language: String,
+    name: String,
+    runtime: DisplayDuration,
+    output: String,
 }
 fn time<T, F: FnOnce() -> T>(cb: F) -> (T, Duration) {
     let start = Instant::now();

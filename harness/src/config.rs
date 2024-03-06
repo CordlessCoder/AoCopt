@@ -1,7 +1,7 @@
 use std::{borrow::Cow, collections::HashMap, fmt::Debug, path::PathBuf, time::Duration};
 mod deserialize;
 
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use regex::Regex;
 use serde::Deserialize;
 use serde_with::{formats::Flexible, serde_as, DurationSeconds};
@@ -41,6 +41,29 @@ pub struct Arguments {
     /// Print the solutions that would be ran, without actually running them.
     #[arg(long)]
     pub dry: bool,
+    /// Don't emit color in the output tables
+    #[arg(long)]
+    pub nocolor: bool,
+    /// The style used for the results table
+    #[arg(long, env = "TABLE_STYLE", default_value = "modern")]
+    pub table: TableStyle,
+}
+
+#[derive(ValueEnum, Clone, Copy, Debug, Default)]
+pub enum TableStyle {
+    Markdown,
+    Modern,
+    ModernRounded,
+    PSql,
+    ReRestructuredText,
+    Dots,
+    Ascii,
+    AsciiRounded,
+    Blank,
+    TwoLine,
+    #[default]
+    Sharp,
+    Rounded,
 }
 
 fn get_true() -> bool {
