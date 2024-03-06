@@ -211,8 +211,8 @@ clean = "dotnet clean"
 
 [[2023.01.1]]
 lang = "Lua"
-name = "AoCLua"
+name = "Regex"
 desc = "A luvit-lua solution."
 
 path = "solutions/Lua/2023/d1p1"
-exec = "luvit AoCLua.lua"
+exec = "luvit Regex.lua"
