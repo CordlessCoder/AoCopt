@@ -179,6 +179,7 @@ build = "stack build"
 exec = "stack run"
 clean = "stack clean"
 
+[[2023.01.1]]
 lang = "Elixir"
 name = "Lol regex approach"
 desc = "Kind of bad regex solution"
