@@ -1,9 +1,10 @@
+{-# LANGUAGE BangPatterns #-}
 module Lib (adventOfCode) where
 
 import Data.Char
 
 adventOfCode :: String -> Int
-adventOfCode s = sum $ map readCalibration (lines s)
+adventOfCode !s = sum $ map readCalibration (lines s)
 
 readCalibration :: String -> Int
 readCalibration s = readCalibration' $ map digitToInt (filter isDigit s)
