@@ -33,6 +33,10 @@ defmodule Aoc do
         d1_no_regex_parallel: [
           name: "d1_no_regex_parallel",
           about: "Performs d1_no_regex but lazily parallelized"
+        ],
+        d1_flow: [
+          name: "d1_flow",
+          about: "Parallelism via flow"
         ]
       ]
     )
@@ -44,6 +48,7 @@ defmodule Aoc do
       {[:d1_regex], _args} -> Aoc.DayOne.part_one_regex()
       {[:d1_no_regex], _args} -> Aoc.DayOne.part_one_no_regex()
       {[:d1_no_regex_parallel], _args} -> Aoc.DayOne.part_one_no_regex_parallel()
+      {[:d1_flow], _args} -> Aoc.DayOne.part_one_flow()
       {[:bench], _args} -> Aoc.Bench.bench()
     end
 

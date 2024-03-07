@@ -220,6 +220,16 @@ exec = "./aoc d1_no_regex_parallel"
 clean = "mix clean"
 
 [[2023.01.1]]
+lang = "Elixir"
+name = "Shitty Flow"
+desc = "Slightly less shitty parallelism featuring flow"
+
+path = "solutions/Elixir/2023/aoc"
+build = "mix deps.get; mix escript.build"
+exec = "./aoc d1_flow"
+clean = "mix clean"
+
+[[2023.01.1]]
 lang = "CSharp"
 name = "Linq"
 desc = "Totally lazy Linq solution"

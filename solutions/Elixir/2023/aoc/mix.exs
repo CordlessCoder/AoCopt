@@ -43,7 +43,8 @@ defmodule Aoc.MixProject do
     [
       {:optimus, "~> 0.5.0"},
       {:benchee, "~> 1.3", only: :dev},
-      {:burrito, "~> 1.0"}
+      {:burrito, "~> 1.0"},
+      {:flow, "~> 1.2"},
       # {:tria, github: "hissssst/tria"},
     ]
   end
