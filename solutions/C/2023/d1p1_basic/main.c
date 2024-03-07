@@ -1,5 +1,3 @@
-#include <bits/time.h>
-#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +23,7 @@ Buffer read_input() {
     Buffer buf = {malloc(DEFAULT_CAP), 0, DEFAULT_CAP};
 
     while (1) {
-        size_t count = read(0, buf.ptr + buf.len, buf.cap - buf.len);
+        size_t count = (size_t)read(0, buf.ptr + buf.len, buf.cap - buf.len);
         if (count <= 0) {
             break;
         }
