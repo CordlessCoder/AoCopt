@@ -10,7 +10,7 @@ set_up_target:
 	mkdir -p $(TARGET_DIR)
 
 debug: set_up_target
-	$(CC) main.c -o $(TARGET_DIR)/d1p1_debug -Wall -Wpedantic -Wconversion -O0 -g -fsanitize=address
+	$(CC) main.c -o $(TARGET_DIR)/d1p1_debug -Wall -Wpedantic -Wformat -Wconversion -O0 -g -fsanitize=address
 
 clean:
 	rm $(TARGET_DIR)/d1p1
