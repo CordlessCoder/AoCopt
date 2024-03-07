@@ -19,7 +19,7 @@ void grow(Buffer *buf) {
 
 void buffer_cleanup(Buffer buf) { free(buf.ptr); }
 
-Buffer read_input() {
+Buffer read_input(void) {
     Buffer buf = {malloc(DEFAULT_CAP), 0, DEFAULT_CAP};
 
     while (1) {

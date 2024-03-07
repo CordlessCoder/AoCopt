@@ -1,4 +1,4 @@
-CC ?= clang
+CC = clang
 CFLAGS ?= -Wall -Wpedantic -O3 -march=native
 
 TARGET_DIR ?= target
