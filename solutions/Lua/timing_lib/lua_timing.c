@@ -10,7 +10,6 @@
 // Needed for C++ name mangling to not ruin our lives
 extern "C" {
 #endif
-#include <math.h>
 #include <time.h>
 
 static int time_ns(lua_State *L) {
