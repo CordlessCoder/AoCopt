@@ -32,13 +32,24 @@ exec = "../../target/release/d1p1_manual_simd"
 clean = "cargo clean"
 
 [[2023.01.1]]
-lang = "C"
+lang = "C(gcc)"
 name = "Naive"
 desc = "Every second of writing this was excrutiating and I never want to do it again."
 
 path = "solutions/C/2023/d1p1_basic"
 
-build = 'make build'
+build = 'make CC=gcc build'
+exec = "./target/d1p1"
+clean = "make clean"
+
+[[2023.01.1]]
+lang = "C(clang)"
+name = "Naive"
+desc = "Every second of writing this was excrutiating and I never want to do it again."
+
+path = "solutions/C/2023/d1p1_basic"
+
+build = 'make CC=clang build'
 exec = "./target/d1p1"
 clean = "make clean"
 
