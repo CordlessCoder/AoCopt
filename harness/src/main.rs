@@ -337,6 +337,9 @@ fn main() -> eyre::Result<()> {
         if b.is_zero() && a.is_zero() {
             return std::cmp::Ordering::Equal;
         }
+        if a.is_zero() {
+            return std::cmp::Ordering::Greater;
+        }
         if b.is_zero() {
             return std::cmp::Ordering::Less;
         }
