@@ -27,9 +27,15 @@ defmodule Aoc.DayOne do
     start = System.os_time(:nanosecond)
 
     sum =
-      String.split(input, newline(), trim: true)
-      |> Stream.map(&process/1)
-      |> Enum.sum()
+      String.split(input, "\n", trim: true)
+      |> Stream.map(fn line ->
+      digits = String.replace(line, ~r/[^0-9]/, "")
+      first = String.to_integer(String.first(digits))
+      last = String.to_integer(String.last(digits))
+
+      first * 10 + last
+    end)
+    |> Enum.sum()
 
     endpoint = System.os_time(:nanosecond)
     duration = endpoint - start

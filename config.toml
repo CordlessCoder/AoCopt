@@ -195,7 +195,7 @@ name = "Lol regex approach"
 desc = "Kind of bad regex solution"
 
 path = "solutions/Elixir/2023/aoc"
-build = "mix deps.get; mix escript.build"
+build = "mix deps.get; MIX_ENV=prod mix escript.build"
 exec = "./aoc d1_regex"
 clean = "mix clean"
 
@@ -205,7 +205,7 @@ name = "BitString approach"
 desc = "Should be less horrible than the first one"
 
 path = "solutions/Elixir/2023/aoc"
-build = "mix deps.get; mix escript.build"
+build = "mix deps.get; MIX_ENV=prod mix escript.build"
 exec = "./aoc d1_no_regex"
 clean = "mix clean"
 
@@ -215,17 +215,17 @@ name = "Shitty Parallel"
 desc = "A really lazily-made parallel implementation"
 
 path = "solutions/Elixir/2023/aoc"
-build = "mix deps.get; mix escript.build"
+build = "mix deps.get; MIX_ENV=prod mix escript.build"
 exec = "./aoc d1_no_regex_parallel"
 clean = "mix clean"
 
 [[2023.01.1]]
 lang = "Elixir"
-name = "Shitty Flow"
-desc = "Slightly less shitty parallelism featuring flow"
+name = "Flow"
+desc = "Somewhat alright parallelism featuring flow"
 
 path = "solutions/Elixir/2023/aoc"
-build = "mix deps.get; mix escript.build"
+build = "mix deps.get; MIX_ENV=prod mix escript.build"
 exec = "./aoc d1_flow"
 clean = "mix clean"
 

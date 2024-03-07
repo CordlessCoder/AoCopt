@@ -10,9 +10,7 @@ defmodule Aoc.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       escript: [main_module: Aoc],
-      releases: releases(),
-      # consolidate_protocols: false,
-      # compilers: [:erlang, :tria, :app]
+      # releases: releases(),
     ]
   end
 
