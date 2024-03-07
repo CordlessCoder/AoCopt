@@ -18,9 +18,21 @@ defmodule Aoc do
         ]
       ],
       subcommands: [
-        d1: [
-          name: "d1",
+        bench: [
+          name: "bench",
+          about: "Does all the benchy benchy benchee"
+        ],
+        d1_regex: [
+          name: "d1_regex",
           about: "Performs the day one advent of code challenge part one"
+        ],
+        d1_no_regex: [
+          name: "d1_no_regex",
+          about: "Performs d1 aoc challenge without regex"
+        ],
+        d1_no_regex_parallel: [
+          name: "d1_no_regex_parallel",
+          about: "Performs d1_no_regex but lazily parallelized"
         ]
       ]
     )
@@ -29,7 +41,12 @@ defmodule Aoc do
 
     case args do
       %{args: %{}} -> Optimus.parse!(optimus, ["--help"])
-      {[:d1], _args} -> Aoc.DayOne.part_one()
+      {[:d1_regex], _args} -> Aoc.DayOne.part_one_regex()
+      {[:d1_no_regex], _args} -> Aoc.DayOne.part_one_no_regex()
+      {[:d1_no_regex_parallel], _args} -> Aoc.DayOne.part_one_no_regex_parallel()
+      {[:bench], _args} -> Aoc.Bench.bench()
     end
+
+    System.halt(0)
   end
 end

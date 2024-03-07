@@ -196,7 +196,27 @@ desc = "Kind of bad regex solution"
 
 path = "solutions/Elixir/2023/aoc"
 build = "mix deps.get; mix escript.build"
-exec = "./aoc d1"
+exec = "./aoc d1_regex"
+clean = "mix clean"
+
+[[2023.01.1]]
+lang = "Elixir"
+name = "BitString approach"
+desc = "Should be less horrible than the first one"
+
+path = "solutions/Elixir/2023/aoc"
+build = "mix deps.get; mix escript.build"
+exec = "./aoc d1_no_regex"
+clean = "mix clean"
+
+[[2023.01.1]]
+lang = "Elixir"
+name = "Shitty Parallel"
+desc = "A really lazily-made parallel implementation"
+
+path = "solutions/Elixir/2023/aoc"
+build = "mix deps.get; mix escript.build"
+exec = "./aoc d1_no_regex_parallel"
 clean = "mix clean"
 
 [[2023.01.1]]
