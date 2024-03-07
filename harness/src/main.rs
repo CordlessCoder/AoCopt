@@ -334,6 +334,9 @@ fn main() -> eyre::Result<()> {
     results.sort_by(|a, b| {
         let a = a.runtime.0;
         let b = b.runtime.0;
+        if b.is_zero() && a.is_zero() {
+            return std::cmp::Ordering::Equal;
+        }
         if b.is_zero() {
             return std::cmp::Ordering::Less;
         }
