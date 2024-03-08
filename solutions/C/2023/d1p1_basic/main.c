@@ -72,21 +72,58 @@ start:
     return sum_first * 10 + sum_last;
 }
 
+uint64_t timespec_to_nanos(struct timespec time) { return time.tv_sec * 1000000000 + time.tv_nsec; }
+
+uint32_t bench(uint64_t *runtime, uint32_t (*fn_ptr)(Buffer), Buffer input) {
+#define MIN_SAMPLES 100
+#define SAMPLE                                  \
+    for (uint32_t i = 0; i < per_sample; i++) { \
+        result = fn_ptr(input);                 \
+    }
+    struct timespec start;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
+    uint32_t result = fn_ptr(input);
+
+    struct timespec end;
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    uint64_t oneshot = timespec_to_nanos(end) - timespec_to_nanos(start);
+
+    double   runs       = (double)*runtime / (double)oneshot;
+    uint32_t per_sample = (uint32_t)runs / MIN_SAMPLES;
+
+    per_sample = per_sample >= 2 ? per_sample : 2;
+    per_sample = per_sample <= 32 ? per_sample : 32;
+
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    SAMPLE;
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    uint64_t sample_time = timespec_to_nanos(end) - timespec_to_nanos(start);
+
+    uint64_t samples = *runtime / sample_time;
+    samples          = samples >= 1 ? samples : 1;
+
+    *runtime = 0;
+    for (uint64_t sample = 0; sample < samples; sample++) {
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        SAMPLE;
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        uint64_t sample_time = timespec_to_nanos(end) - timespec_to_nanos(start);
+        *runtime += sample_time;
+    }
+    *runtime = *runtime / samples / per_sample;
+
+    return result;
+}
+
 int main(void) {
     Buffer input = read_input();
 
-    struct timespec time;
-    clock_gettime(CLOCK_MONOTONIC, &time);
-    struct timespec start = time;
+    uint64_t runtime = 128000000;
 
-    uint32_t result = solve(input);
+    uint32_t result = bench(&runtime, solve, input);
 
-    clock_gettime(CLOCK_MONOTONIC, &time);
-    struct timespec end = time;
-
-    uint64_t nanos = (uint64_t)((end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec);
-
-    printf("%d\n%ld", result, nanos);
+    printf("%d\n%ld", result, runtime);
 
     free(input.ptr);
 }
