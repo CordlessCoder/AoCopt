@@ -32,6 +32,17 @@ exec = "../../target/release/d1p1_manual_simd"
 clean = "cargo clean"
 
 [[2023.01.1]]
+lang = "Rust"
+name = "Regex"
+desc = "This was done as a joke"
+
+path = "solutions/Rust/2023/d1p1_regex"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d1p1_regex"
+clean = "cargo clean"
+
+[[2023.01.1]]
 lang = "C(gcc)"
 name = "Naive"
 desc = "Every second of writing this was excrutiating and I never want to do it again."

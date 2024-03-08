@@ -1,0 +1,8 @@
+[package]
+name = "d1p1_regex"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+regex = { version = "1.10.3", default-features = false, features = ["std", "perf"] }
+aoc_util = { workspace = true }
