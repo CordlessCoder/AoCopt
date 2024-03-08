@@ -3,7 +3,6 @@ defmodule Aoc.DayOne do
 
   defp char_conv(char), do: char - 48
 
-  # char >= ?0 and char <= ?9
   defp check_digit(char), do: char in ?0..?9
 
   defp newline do
@@ -19,16 +18,6 @@ defmodule Aoc.DayOne do
     last = char_conv(List.last(digits))
     first * 10 + last
   end
-
-  defp comprehension(10, {sum, first, last}), do: {sum + first * 10 + last, 0, 0}
-
-  defp comprehension(letter, {sum, 0, 0}) when letter in ?0..?9,
-    do: {sum, letter - 48, letter - 48}
-
-  defp comprehension(letter, {sum, first, _last}) when letter in ?0..?9,
-    do: {sum, first, letter - 48}
-
-  defp comprehension(_letter, {sum, first, last}), do: {sum, first, last}
 
   def part_one_regex(dev \\ false) do
     input =
@@ -125,6 +114,16 @@ defmodule Aoc.DayOne do
     IO.puts(sum)
     IO.puts("Took #{duration} nanoseconds")
   end
+
+  defp comprehension(10, {sum, first, last}), do: {sum + first * 10 + last, 0, 0}
+
+  defp comprehension(letter, {sum, 0, 0}) when letter in ?0..?9,
+    do: {sum, letter - 48, letter - 48}
+
+  defp comprehension(letter, {sum, first, _last}) when letter in ?0..?9,
+    do: {sum, first, letter - 48}
+
+  defp comprehension(_letter, {sum, first, last}), do: {sum, first, last}
 
   def part_one_compr(dev \\ false) do
     input =
