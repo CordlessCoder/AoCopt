@@ -22,7 +22,7 @@ fn solve(input: &str) -> u32 {
 
 fn main() {
     REGEX.get_or_init(|| {
-        regex::bytes::RegexBuilder::new(r#"^*\D*(\d)(?:.*(\d))?.*$"#)
+        regex::bytes::RegexBuilder::new(r#"^\D*(\d)(?:.*(\d))?.*$"#)
             .unicode(false)
             .multi_line(true)
             .build()
