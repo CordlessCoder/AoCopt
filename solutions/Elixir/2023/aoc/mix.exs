@@ -10,7 +10,7 @@ defmodule Aoc.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       escript: [main_module: Aoc],
-      # releases: releases(),
+      #continue releases: releases(),
     ]
   end
 
@@ -43,6 +43,7 @@ defmodule Aoc.MixProject do
       {:benchee, "~> 1.3", only: :dev},
       {:burrito, "~> 1.0"},
       {:flow, "~> 1.2"},
+      {:pelemay, "~> 0.0.15"},
       # {:tria, github: "hissssst/tria"},
     ]
   end

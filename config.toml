@@ -221,12 +221,12 @@ clean = "stack clean"
 
 [[2023.01.1]]
 lang = "Elixir"
-name = "Lol regex approach"
-desc = "Kind of bad regex solution"
+name = "Comprehension"
+desc = "A onepass comprehension-based approach"
 
 path = "solutions/Elixir/2023/aoc"
 build = "mix deps.get; MIX_ENV=prod mix escript.build"
-exec = "./aoc d1_regex"
+exec = "./aoc d1_compr"
 clean = "mix clean"
 
 [[2023.01.1]]
@@ -237,16 +237,6 @@ desc = "Should be less horrible than the first one"
 path = "solutions/Elixir/2023/aoc"
 build = "mix deps.get; MIX_ENV=prod mix escript.build"
 exec = "./aoc d1_no_regex"
-clean = "mix clean"
-
-[[2023.01.1]]
-lang = "Elixir"
-name = "Shitty Parallel"
-desc = "A really lazily-made parallel implementation"
-
-path = "solutions/Elixir/2023/aoc"
-build = "mix deps.get; MIX_ENV=prod mix escript.build"
-exec = "./aoc d1_no_regex_parallel"
 clean = "mix clean"
 
 [[2023.01.1]]

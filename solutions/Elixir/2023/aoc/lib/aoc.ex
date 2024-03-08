@@ -37,6 +37,14 @@ defmodule Aoc do
         d1_flow: [
           name: "d1_flow",
           about: "Parallelism via flow"
+        ],
+        d1_compr: [
+          name: "d1_compr",
+          about: "Comprehension to bypass having to split by newline"
+        ],
+        d1_compr2: [
+          name: "d1_compr2",
+          about: "Comprehension with a single pass. No pre-filtering"
         ]
       ]
     )
@@ -49,6 +57,8 @@ defmodule Aoc do
       {[:d1_no_regex], _args} -> Aoc.DayOne.part_one_no_regex()
       {[:d1_no_regex_parallel], _args} -> Aoc.DayOne.part_one_no_regex_parallel()
       {[:d1_flow], _args} -> Aoc.DayOne.part_one_flow()
+      {[:d1_compr], _args} -> Aoc.DayOne.part_one_compr()
+      {[:d1_compr2], _args} -> Aoc.DayOne.part_one_compr2()
       {[:bench], _args} -> Aoc.Bench.bench()
     end
 
