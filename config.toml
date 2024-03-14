@@ -181,6 +181,17 @@ build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
 exec = "../../target/release/d7p2"
 clean = "cargo clean"
 
+[[2015.14.1]]
+lang = "Rust"
+name = "Combinators"
+desc = "A solution using parser combinators(winnow)"
+
+path = "solutions/Rust/2015/d14p1"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d14p1"
+clean = "cargo clean"
+
 [[2023.01.1]]
 lang = "Golang"
 name = "Basic Approach"
