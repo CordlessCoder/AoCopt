@@ -1,5 +1,6 @@
 use std::{
     borrow::Cow,
+    collections::HashMap,
     env::current_dir,
     ffi::OsStr,
     fmt::{Debug, Display},
@@ -282,17 +283,17 @@ fn main() -> eyre::Result<()> {
     let filesystem_provider = FilesystemInputProvider::new(config.input_path.clone());
     input_provider.push(Box::new(filesystem_provider));
     if let Some(aoc_token) = args.aoc_token.as_ref() {
-        let network_provider = NetworkInputProvider::new(aoc_token, config.req_timeout);
-        input_provider.push(Box::new(network_provider));
-    } else {
-        input_provider.push(Box::new(NetworkInputProvider::no_creds()));
+        if config.download_inputs {
+            let network_provider = NetworkInputProvider::new(aoc_token, config.req_timeout);
+            input_provider.push(Box::new(network_provider));
+        }
     }
     let mut state = State {
         input_provider: Box::new(input_provider),
         clean: args.clean,
         command_timeout: config.command_timeout,
     };
-    let mut results = Vec::new();
+    let mut results = HashMap::new();
     for (DeserFromStr(part), solutions) in to_run {
         println!("Executing {year} day {day} part {part}");
         for sol in solutions {
@@ -305,67 +306,74 @@ fn main() -> eyre::Result<()> {
                         out = output.green()
                     );
                     let Solution { language, name, .. } = sol;
-                    results.push(SolutionResult {
-                        language,
-                        name,
-                        output,
-                        runtime: runtime.into(),
-                    });
+                    results
+                        .entry(part)
+                        .or_insert(Vec::new())
+                        .push(SolutionResult {
+                            language,
+                            name,
+                            output,
+                            runtime: runtime.into(),
+                        });
                 }
                 Err(err) => {
                     println!("{} {err:?}", "Failed to run solution:".red().bold());
                     let Solution { language, name, .. } = sol;
-                    results.push(SolutionResult {
-                        language,
-                        name,
-                        output: if args.nocolor {
-                            "DNF".to_string()
-                        } else {
-                            "DNF".bright_red().to_string()
-                        },
-                        runtime: Duration::ZERO.into(),
-                    });
+                    results
+                        .entry(part)
+                        .or_insert(Vec::new())
+                        .push(SolutionResult {
+                            language,
+                            name,
+                            output: if args.nocolor {
+                                "DNF".to_string()
+                            } else {
+                                "DNF".bright_red().to_string()
+                            },
+                            runtime: Duration::ZERO.into(),
+                        });
                 }
             };
         }
     }
-    // Sort by runtime in ascending order, but put all 0 runtime solutions at the end as those
-    // failed
-    results.sort_by(|a, b| {
-        let a = a.runtime.0;
-        let b = b.runtime.0;
-        if b.is_zero() && a.is_zero() {
-            return std::cmp::Ordering::Equal;
+    for (part, mut results) in results {
+        // Sort by runtime in ascending order, but put all 0 runtime solutions at the end as those
+        // failed
+        results.sort_unstable_by(|lhs, rhs| {
+            let a = lhs.runtime.0;
+            let b = rhs.runtime.0;
+            match (a.is_zero(), b.is_zero()) {
+                (true, true) => lhs.name.cmp(&rhs.name),
+                (true, _) => std::cmp::Ordering::Greater,
+                (_, true) => std::cmp::Ordering::Less,
+                _ => a.cmp(&b),
+            }
+        });
+        let mut table = tabled::Table::new(results);
+
+        match args.table {
+            TableStyle::Modern => table.with(Style::modern()),
+            TableStyle::ModernRounded => table.with(Style::modern_rounded()),
+            TableStyle::PSql => table.with(Style::psql()),
+            TableStyle::ReRestructuredText => table.with(Style::re_structured_text()),
+            TableStyle::Markdown => table.with(Style::markdown()),
+            TableStyle::Ascii => table.with(Style::ascii()),
+            TableStyle::AsciiRounded => table.with(Style::ascii_rounded()),
+            TableStyle::Dots => table.with(Style::dots()),
+            TableStyle::Blank => table.with(Style::blank()),
+            TableStyle::TwoLine => table.with(Style::extended()),
+            TableStyle::Sharp => table.with(Style::sharp()),
+            TableStyle::Rounded => table.with(Style::rounded()),
+        };
+        if !args.nocolor {
+            table.modify(Columns::new(0..1), tabled::settings::Color::FG_CYAN);
+            table.modify(Columns::new(2..3), tabled::settings::Color::FG_MAGENTA);
         }
-        if a.is_zero() {
-            return std::cmp::Ordering::Greater;
-        }
-        if b.is_zero() {
-            return std::cmp::Ordering::Less;
-        }
-        a.cmp(&b)
-    });
-    let mut table = tabled::Table::new(results);
-    match args.table {
-        TableStyle::Modern => table.with(Style::modern()),
-        TableStyle::ModernRounded => table.with(Style::modern_rounded()),
-        TableStyle::PSql => table.with(Style::psql()),
-        TableStyle::ReRestructuredText => table.with(Style::re_structured_text()),
-        TableStyle::Markdown => table.with(Style::markdown()),
-        TableStyle::Ascii => table.with(Style::ascii()),
-        TableStyle::AsciiRounded => table.with(Style::ascii_rounded()),
-        TableStyle::Dots => table.with(Style::dots()),
-        TableStyle::Blank => table.with(Style::blank()),
-        TableStyle::TwoLine => table.with(Style::extended()),
-        TableStyle::Sharp => table.with(Style::sharp()),
-        TableStyle::Rounded => table.with(Style::rounded()),
-    };
-    if !args.nocolor {
-        table.modify(Columns::new(0..1), tabled::settings::Color::FG_CYAN);
-        table.modify(Columns::new(2..3), tabled::settings::Color::FG_MAGENTA);
+        table.modify(Columns::new(2..3), tabled::settings::Alignment::right());
+        let width = table.total_width();
+        let header = format!("{year} day {day} part {part}");
+        println!("{header:^width$}\n{table}");
     }
-    table.modify(Columns::new(2..3), tabled::settings::Alignment::right());
-    println!("{table}");
     Ok(())
 }
 fn print_solution(name: &str, language: &str, description: Option<&str>) {

@@ -1,3 +1,4 @@
+#![allow(clippy::type_complexity)]
 use std::{borrow::Cow, collections::HashMap, fmt::Debug, path::PathBuf, time::Duration};
 mod deserialize;
 
