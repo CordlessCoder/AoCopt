@@ -33,6 +33,17 @@ clean = "cargo clean"
 
 [[2023.01.1]]
 lang = "Rust"
+name = "Manually vectorized: stdsimd"
+desc = ""
+
+path = "solutions/Rust/2023/d1p1_stdsimd"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d1p1_stdsimd_2023"
+clean = "cargo clean"
+
+[[2023.01.1]]
+lang = "Rust"
 name = "Regex"
 desc = "This was done as a joke"
 
