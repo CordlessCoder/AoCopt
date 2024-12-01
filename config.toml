@@ -148,6 +148,17 @@ build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
 exec = "../../target/release/d4p1_2023"
 clean = "cargo clean"
 
+[[2023.4.2]]
+lang = "Rust"
+name = "Basic"
+desc = "A somewhat simple solution using parser combinators(winnow)"
+
+path = "solutions/Rust/2023/d4p2"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d4p2_2023"
+clean = "cargo clean"
+
 [[2015.01.1]]
 lang = "Rust"
 name = "Iterator"
@@ -323,3 +334,25 @@ path = "solutions/Lua/2023/d1p1"
 
 build = "cd ../../timing_lib;make"
 exec = "luajit Regex.lua"
+
+[[2024.01.1]]
+lang = "Rust"
+name = "Naive"
+desc = "A somewhat simple, iterator-based solution"
+
+path = "solutions/Rust/2024/d1p1"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d1p1"
+clean = "cargo clean"
+
+[[2024.1.2]]
+lang = "Rust"
+name = "Naive"
+desc = "A somewhat simple, iterator-based solution"
+
+path = "solutions/Rust/2024/d1p2"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d1p2"
+clean = "cargo clean"

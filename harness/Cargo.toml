@@ -8,14 +8,29 @@ opt-level = 1
 lto = false
 
 [dependencies]
-clap = { version = "4.5.1", features = ["derive", "env", "color", "cargo", "wrap_help"] }
-color-eyre = "0.6.2"
+clap = { version = "4.5", features = [
+  "derive",
+  "env",
+  "color",
+  "cargo",
+  "wrap_help",
+] }
+color-eyre = "0.6.3"
 dotenvy = "0.15.7"
-inquire = "0.7.0"
-regex = { version = "1.10.3", default-features = false, features = ["std", "unicode"] }
-reqwest = { version = "0.11.24", features = ["cookies", "blocking", "gzip", "brotli", "rustls-tls"], default-features = false }
-serde = { version = "1.0.197", features = ["derive", "alloc"] }
-serde_regex = "1.1.0"
-serde_with = "3.6.1"
-tabled = { version = "0.15.0", features = ["ansi"] }
-toml = { version = "0.8.10", default-features = false, features = ["parse"] }
+inquire = "0.7.5"
+regex = { version = "1.11", default-features = false, features = [
+  "std",
+  "unicode",
+] }
+reqwest = { version = "0.12", features = [
+  "cookies",
+  "blocking",
+  "gzip",
+  "brotli",
+  "rustls-tls",
+], default-features = false }
+serde = { version = "1.0", features = ["derive", "alloc"] }
+serde_regex = "1.1"
+serde_with = "3.11"
+tabled = { version = "0.17", features = ["ansi"] }
+toml = { version = "0.8", default-features = false, features = ["parse"] }
