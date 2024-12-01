@@ -105,7 +105,14 @@ desc = "Iterables. It's all iterables!"
 path = "solutions/Python/2023/"
 
 exec = "python d1p1.py"
+[[2023.01.01]]
+lang = "Rust"
+name = "Iterative"
+desc = "Quite simple, Quite loopy!"
 
+path = "solutions/Rust/2023/d1p1_iterative"
+build = "cargo build --relase"
+exec = "../../target/release/d1p1_iterative"
 [[2023.01.2]]
 lang = "Python"
 name = "Iterators"
