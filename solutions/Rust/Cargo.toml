@@ -1,5 +1,5 @@
 [workspace]
-members = [ "*/d*p*"]
+members = ["*/d*p*"]
 resolver = "1"
 exclude = ["aoc_util"]
 

@@ -1,0 +1,8 @@
+[package]
+name = "d2p1_2024"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aoc_util.workspace = true
+winnow = { workspace = true, features = ["simd"] }
