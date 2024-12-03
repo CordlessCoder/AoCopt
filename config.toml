@@ -385,3 +385,25 @@ path = "solutions/Rust/2024/d2p2"
 build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
 exec = "../../target/release/d2p2_2024"
 clean = "cargo clean"
+
+[[2024.3.1]]
+lang = "Rust"
+name = "Naive"
+desc = "A somewhat simple, iterator-based solution"
+
+path = "solutions/Rust/2024/d3p1"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d3p1_2024"
+clean = "cargo clean"
+
+[[2024.3.2]]
+lang = "Rust"
+name = "Naive"
+desc = "A somewhat simple, iterator-based solution"
+
+path = "solutions/Rust/2024/d3p2"
+
+build = 'RUSTFLAGS="-C target-cpu=native" cargo build --release -q'
+exec = "../../target/release/d3p2_2024"
+clean = "cargo clean"
