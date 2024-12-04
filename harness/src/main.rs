@@ -273,7 +273,7 @@ fn main() -> eyre::Result<()> {
             println!("Executing {year} day {day} part {part}");
             for sol in solutions {
                 print_solution(&sol.name, &sol.language, sol.description.as_deref());
-                println!("")
+                println!()
             }
         }
         return Ok(());
@@ -459,7 +459,7 @@ fn run_solution(
     let shell = shell.as_deref().unwrap_or(DEFAULT_SHELL);
     let (shell, args) = shell
         .split_first()
-        .wrap_err_with(|| format!("The shell is empty"))
+        .wrap_err("The shell is empty")
         .suggestion("Set the shell for the solution in your TOML config file")?;
 
     let cmd = |command: &str| -> eyre::Result<Child> {
@@ -547,7 +547,7 @@ fn run_solution(
         let nanos: u64 = time_regex
             .captures(&output)
             .and_then(|cap| cap.get(1))
-            .wrap_err_with(|| format!("Failed to capture the timing"))?
+            .wrap_err("Failed to capture the timing")?
             .as_str()
             .parse()
             .wrap_err("Failed to parse runtime from solution output")?;
