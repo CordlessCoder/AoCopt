@@ -36,7 +36,6 @@ fn solution(input: &str) -> usize {
                 .count()
         })
         .sum()
-    // unimplemented!()
 }
 
 fn main() {

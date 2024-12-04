@@ -5,8 +5,8 @@ fn solution(input: &str) -> usize {
         let y: usize = y.try_into().ok()?;
         input.as_bytes().get(y * (width + 1) + x).copied()
     };
-    (0..input.len().div_ceil(width) as isize)
-        .flat_map(|y| (0..width as isize).map(move |x| (x, y)))
+    (1..input.len().div_ceil(width) as isize - 1)
+        .flat_map(|y| (1..width as isize - 1).map(move |x| (x, y)))
         // Filter for the middle A
         .filter(|&(x, y)| get(x, y) == Some(b'A'))
         // Filter for \ diagonal
