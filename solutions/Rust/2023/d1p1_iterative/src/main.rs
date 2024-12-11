@@ -12,15 +12,15 @@ fn solution(input: &str) -> u64 {
     sum
 }
 
-fn parse_line(line: &String) -> u64{
-    let mut values: Vec<u64> = Vec::new();  
+fn parse_line(line: &String) -> u64 {
+    let mut values: Vec<u64> = Vec::new();
 
     for c in line.as_bytes().iter() {
-        if c.is_ascii_digit() {  
-            values.push((c - b'0') as u64);  
+        if c.is_ascii_digit() {
+            values.push((c - b'0') as u64);
         }
     }
 
     (values[0] * 10) + values[values.len() - 1]
-
 }
+
