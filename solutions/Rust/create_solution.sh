@@ -12,3 +12,16 @@ if [ -d "$path" ]; then
 fi
 cargo new "$path" --name "${path}_$1"
 cargo add aoc_util --package "${path}_$1"
+
+cd ".." || exit
+
+echo "[[${1}.${2}.${3}]]
+lang = \"Rust\"
+name = \"Naive\"
+desc = \"A somewhat simple, iterator-based solution\"
+
+path = \"solutions/Rust/${1}/$path\"
+
+build = 'RUSTFLAGS=\"-C target-cpu=native\" cargo build --release -q'
+exec = \"../../target/release/${path}_$1\"
+clean = \"cargo clean\"" >> ../../config.toml

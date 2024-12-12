@@ -1,8 +1,5 @@
-// 2333133121414131402
-// 00...111...2...333.44.5555.6666.777.888899
 fn solution(input: &str) -> u64 {
     let input = input.trim().as_bytes();
-    // let [mut left, mut right] = [None; 2];
     let mut blocks = input
         .iter()
         .copied()
