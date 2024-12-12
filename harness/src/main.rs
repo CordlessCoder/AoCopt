@@ -1,6 +1,6 @@
 use std::{
     borrow::Cow,
-    collections::HashMap,
+    collections::BTreeMap,
     env::current_dir,
     ffi::OsStr,
     fmt::{Debug, Display},
@@ -293,7 +293,7 @@ fn main() -> eyre::Result<()> {
         clean: args.clean,
         command_timeout: config.command_timeout,
     };
-    let mut results = HashMap::new();
+    let mut results = BTreeMap::new();
     for (DeserFromStr(part), solutions) in to_run {
         println!("Executing {year} day {day} part {part}");
         for sol in solutions {
